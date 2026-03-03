@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos Expertises — NOTAVEXIN Notaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf8f4;--bg1:#faf8f4;
+  --g:#e0a406;--gl:#e6ae14;--gd:#cf950c;
+  --tx:#000000;--tx2:#413c38;
+  --mu:rgba(39,37,34,.78);
+  --ln:rgba(184,135,11,.52);
+  --dk:#0c0a07;
+  --E:cubic-bezier(.76,0,.24,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#dot,#ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;}
+#dot{width:7px;height:7px;background:var(--gl);margin-left:-3.5px;margin-top:-3.5px;transition:transform .18s var(--E);}
+#ring{width:34px;height:34px;border:1.5px solid rgba(184,134,11,.42);margin-left:-17px;margin-top:-17px;transition:width .42s var(--E),height .42s var(--E),margin .42s var(--E),border-color .3s;}
+body.hov #dot{transform:scale(.45);}
+body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-color:var(--g);}
+
+/* NAV */
+#nav{position:fixed;inset:0 0 auto;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0 72px;background:transparent;border-bottom:1px solid transparent;transition:padding .5s var(--E),background .4s,border-color .4s,box-shadow .4s;}
+#nav.on{padding:13px 72px;background:rgba(250,248,244,.96);backdrop-filter:blur(16px);border-color:var(--ln);box-shadow:0 2px 32px rgba(184,134,11,.09);}
+.nav-ul{display:flex;align-items:center;gap:22px;list-style:none;}
+.nav-ul a{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);text-decoration:none;cursor:none;position:relative;transition:color .3s;white-space:nowrap;}
+.nav-ul a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--g);transition:width .45s var(--E);}
+.nav-ul a:hover,.nav-ul a.active{color:var(--tx);}
+.nav-ul a:hover::after,.nav-ul a.active::after{width:100%;}
+.ndot{width:3px;height:3px;border-radius:50%;background:rgba(184,134,11,.45);flex-shrink:0;}
+.nrdv{display:inline-block;position:relative;overflow:hidden;padding:8px 18px;border:1.5px solid var(--g);color:var(--g);text-decoration:none;cursor:none;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;transition:color .4s var(--E);white-space:nowrap;}
+.nrdv::before{content:'';position:absolute;inset:0;background:var(--g);transform:translateY(101%);transition:transform .4s var(--E);}
+.nrdv:hover{color:#fff;}
+.nrdv:hover::before{transform:translateY(0);}
+.nrdv span{position:relative;z-index:1;}
+.nav-logo img{height:80px;width:auto;}
+
+/* BOUTONS */
+.bp{display:inline-block;position:relative;overflow:hidden;padding:13px 34px;background:var(--g);border:none;color:#fff;text-decoration:none;cursor:none;font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;transition:box-shadow .4s;white-space:nowrap;box-shadow:0 4px 24px rgba(184,134,11,.28);}
+.bp::before{content:'';position:absolute;inset:0;background:var(--gd);transform:translateY(101%);transition:transform .5s var(--E);}
+.bp:hover{box-shadow:0 6px 36px rgba(184,134,11,.42);}
+.bp:hover::before{transform:translateY(0);}
+.bp span{position:relative;z-index:1;}
+.bp-ghost{display:inline-block;position:relative;overflow:hidden;padding:12px 30px;border:1.5px solid rgba(244,240,232,.35);color:rgba(244,240,232,.7);text-decoration:none;cursor:none;font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;transition:color .4s var(--E),border-color .4s;white-space:nowrap;}
+.bp-ghost::before{content:'';position:absolute;inset:0;background:rgba(244,240,232,.1);transform:translateY(101%);transition:transform .4s var(--E);}
+.bp-ghost:hover{color:#fff;border-color:rgba(244,240,232,.7);}
+.bp-ghost:hover::before{transform:translateY(0);}
+.bp-ghost span{position:relative;z-index:1;}
+
+/* HERO */
+#hero{position:relative;min-height:56vh;display:flex;align-items:flex-end;padding:0 80px 72px;overflow:hidden;background:var(--bg);}
+#hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 40%,rgba(212,160,18,.09) 0%,transparent 65%);pointer-events:none;}
+.he-deco{position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(18rem,28vw,34rem);line-height:1;color:rgba(184,134,11,.055);pointer-events:none;user-select:none;letter-spacing:-.02em;}
+.he-vline{position:absolute;left:80px;top:0;width:1px;height:0;background:linear-gradient(180deg,transparent,var(--g) 40%,rgba(184,134,11,.4) 100%);transition:height 1.2s var(--E);}
+.he-vline.on{height:100%;}
+.he-vline-dot{position:absolute;bottom:72px;left:80px;width:5px;height:5px;border-radius:50%;background:var(--g);transform:translateX(-2px) scale(0);transition:transform .4s 1.1s var(--E);box-shadow:0 0 10px 2px rgba(212,160,18,.4);}
+.he-vline.on~.he-vline-dot{transform:translateX(-2px) scale(1);}
+.he-body{position:relative;z-index:2;padding-left:48px;padding-top:130px;}
+.he-tag{display:inline-flex;align-items:center;gap:14px;margin-bottom:32px;opacity:0;transform:translateX(-16px);animation:heFd .8s .3s var(--E) forwards;}
+.he-tag-bar{width:24px;height:1px;background:var(--g);}
+.he-tag span{font-size:.54rem;letter-spacing:.32em;text-transform:uppercase;color:var(--g);}
+.he-title{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:.96;color:var(--tx);}
+.he-title .ht-l1{display:block;overflow:hidden;font-size:clamp(4rem,8.5vw,9rem);letter-spacing:-0.04em;padding-bottom:.18em;}
+.he-title .ht-l2{display:block;overflow:visible;font-size:clamp(1.6rem,3vw,3.2rem);letter-spacing:-0.7px;color:var(--mu);margin-top:8px;font-style:italic;padding-bottom:.25em;}
+.he-title .ht-l1 span,.he-title .ht-l2 span{display:block;transform:translateY(110%);opacity:0;animation:heSlide .9s var(--E) forwards;}
+.he-title .ht-l1 span{animation-delay:.5s;}
+.he-title .ht-l2 span{animation-delay:.7s;}
+.he-rule{width:0;height:1px;background:var(--g);margin:36px 0 28px;animation:heRule .9s 1s var(--E) forwards;}
+.he-sub{font-size:.75rem;line-height:1.95;color:var(--mu);max-width:420px;opacity:0;animation:heFd .9s 1.1s ease forwards;}
+@keyframes heFd{to{opacity:1;transform:none;}}
+@keyframes heSlide{to{transform:translateY(0);opacity:1;}}
+@keyframes heRule{to{width:44px;}}
+
+/* Zone scroll */
+#exp-scroll-area{position:relative;}
+
+/* Stage collant */
+#exp-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);will-change:transform;}
+
+/* Barre onglets */
+#exp-tabs-bar{
+  position:absolute;top:0;left:0;right:0;z-index:20;
+  background:rgba(250,248,244,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--gd);display:flex;align-items:stretch;padding:0 80px;height:52px;
+}
+.exp-tab{display:flex;align-items:center;gap:10px;padding:0;margin-right:34px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mu);cursor:none;border-bottom:2px solid transparent;transition:color .35s,border-color .35s;white-space:nowrap;text-decoration:none;height:100%;}
+.exp-tab:hover{color:var(--tx);}
+.exp-tab.active{color:var(--g);}
+.exp-tab-n{font-family:'Cormorant Garamond',serif;font-size:1.13rem;font-weight:500;color:rgba(184,134,11,.4);transition:color .35s;}
+.exp-tab:hover .exp-tab-n,.exp-tab.active .exp-tab-n{color:var(--g);}
+
+/* Progress bar */
+#exp-prog{position:absolute;left:0;top:52px;bottom:0;width:3px;z-index:20;background:rgba(184,135,11,.13);}
+#exp-prog-fill{position:absolute;top:0;left:0;right:0;background:linear-gradient(180deg,var(--bg),var(--gd));height:0%;box-shadow:0 0 10px 2px rgba(212,160,18,.3);transition:height .55s var(--E);}
+#exp-prog-dot{position:absolute;left:50%;width:9px;height:9px;border-radius:50%;background:var(--gd);box-shadow:0 0 14px 4px rgba(212,160,18,.45);transform:translate(-50%,-50%);top:0%;transition:top .55s var(--E);}
+
+/* Dots navigation */
+#exp-dots{position:absolute;right:52px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.exp-dot{width:6px;height:6px;border-radius:50%;background:rgba(184,134,11,.38);cursor:none;transition:background .4s,transform .4s,box-shadow .4s;}
+.exp-dot.active{background:var(--g);transform:scale(1.5);box-shadow:0 0 10px 3px rgba(212,160,18,.38);}
+
+/* Counter */
+#exp-counter-num{position:absolute;left:24px;bottom:32px;z-index:20;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1rem;letter-spacing:.1em;color:var(--g);text-transform:uppercase;}
+
+/* Hint */
+#exp-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:7px;transition:opacity .5s ease;}
+#exp-hint.hidden{opacity:0;pointer-events:none;}
+.hint-txt{font-size:.42rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(184,134,11,.5);}
+.hint-bar{width:1px;height:24px;background:linear-gradient(180deg,rgba(184,134,11,.55),transparent);animation:hintP 1.8s ease infinite;}
+@keyframes hintP{0%,100%{opacity:.3;transform:scaleY(.75);}50%{opacity:1;transform:scaleY(1);}}
+
+/* Panel */
+#exp-panel{position:absolute;inset:0;}
+
+/* Slides */
+.exp-slide{position:absolute;inset:0;display:flex;align-items:stretch;opacity:0;pointer-events:none;will-change:opacity,transform;transform:translateY(32px);transition:opacity .65s var(--E),transform .65s var(--E);}
+.exp-slide.s-active{opacity:1;pointer-events:auto;transform:translateY(0) !important;}
+.exp-slide.s-exit-up{opacity:0;transform:translateY(-32px) !important;pointer-events:none;}
+.exp-slide.s-exit-down{opacity:0;transform:translateY(32px) !important;pointer-events:none;}
+
+/* Colonne numéro */
+.exp-num-col{flex:0 0 200px;position:relative;display:flex;align-items:center;justify-content:flex-end;border-right:1px solid var(--gl);overflow:hidden;padding-top:52px;}
+.exp-num-vbar{position:absolute;left:0;top:52px;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--g) 25%,var(--g) 75%,transparent);transform:scaleY(0);transform-origin:top;transition:transform 1.1s .05s var(--E);}
+.exp-slide.s-active .exp-num-vbar{transform:scaleY(1);}
+.exp-num-label{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(8rem,13vw,15rem);line-height:1;color:transparent;writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg) translateY(-22px);opacity:0;transition:color .9s ease,transform .85s var(--E),opacity .85s ease;user-select:none;pointer-events:none;padding-right:20px;}
+.exp-slide.s-active .exp-num-label{color:rgba(184,134,11,.18);transform:rotate(180deg) translateY(0);opacity:1;}
+
+/* Corps */
+.exp-main{flex:1;position:relative;display:grid;grid-template-columns:1fr 1px 320px;overflow:hidden;padding-top:52px;}
+
+/* Numéro fantôme */
+.exp-bg-num{position:absolute;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(20rem,30vw,40rem);line-height:1;color:transparent;pointer-events:none;user-select:none;right:-4%;bottom:-12%;z-index:0;letter-spacing:-.04em;transition:color .85s .1s ease;}
+.exp-slide.s-active .exp-bg-num{color:rgba(184,135,11,.13);}
+
+/* Ligne déco haut — supprimée */
+.exp-top-line{display:none;}
+
+/* Colonne texte */
+.exp-txt{position:relative;z-index:2;padding:52px 72px 52px 72px;display:flex;flex-direction:column;justify-content:center;}
+
+/* Label */
+.exp-label{display:flex;align-items:center;gap:16px;margin-bottom:34px;overflow:hidden;}
+.exp-label-inner{display:flex;align-items:center;gap:16px;transform:translateX(-20px);opacity:0;transition:transform .72s var(--E),opacity .72s ease;}
+.exp-slide.s-active .exp-label-inner{transform:translateX(0);opacity:1;transition-delay:.06s;}
+.exp-label-n{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;line-height:1;color:rgba(184,135,11,.88);transition:color .9s ease;letter-spacing:-.02em;}
+.exp-slide.s-active .exp-label-n{color:var(--g);}
+.exp-label-sep{display:flex;flex-direction:column;gap:4px;}
+.exp-label-bar{width:28px;height:1px;background:var(--g);}
+.exp-label-txt{font-size:.48rem;letter-spacing:.34em;text-transform:uppercase;color:var(--g);}
+
+/* Titre */
+.exp-title{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:.98;margin-bottom:0;}
+.exp-tline{display:block;overflow:hidden;}
+.exp-tspan{display:block;font-size:clamp(3rem,5.2vw,6rem);transform:translateY(108%);transition:transform .88s var(--E);letter-spacing:-.04em;}
+.exp-tspan em{font-style:italic;color:var(--g);}
+.exp-slide.s-active .exp-tline:nth-child(1) .exp-tspan{transform:none;transition-delay:.08s;}
+.exp-slide.s-active .exp-tline:nth-child(2) .exp-tspan{transform:none;transition-delay:.20s;}
+.exp-slide.s-active .exp-tline:nth-child(3) .exp-tspan{transform:none;transition-delay:.32s;}
+
+/* Règle */
+.exp-rule{width:0;height:1px;background:var(--g);margin:26px 0 28px;transition:width .88s .32s var(--E);}
+.exp-slide.s-active .exp-rule{width:44px;}
+
+/* Lead */
+.exp-lead{font-size:.81rem;line-height:2.1;color:var(--tx2);margin-bottom:20px;border-left:2px solid var(--g);padding-left:18px;opacity:0;transform:translateY(14px);transition:opacity .85s .38s ease,transform .85s .38s ease;}
+.exp-slide.s-active .exp-lead{opacity:1;transform:none;}
+
+/* Body */
+.exp-body{font-size:.70rem;line-height:2.05;color:var(--mu);opacity:0;transform:translateY(12px);transition:opacity .85s .5s ease,transform .85s .5s ease;}
+.exp-slide.s-active .exp-body{opacity:1;transform:none;}
+
+/* CTA */
+.exp-cta{display:flex;align-items:center;gap:16px;margin-top:32px;opacity:0;transform:translateY(10px);transition:opacity .8s .66s ease,transform .8s .66s ease;}
+.exp-slide.s-active .exp-cta{opacity:1;transform:none;}
+
+/* Séparateur */
+.exp-sep{width:1px;background:linear-gradient(180deg,transparent 5%,var(--gl) 30%,var(--gl) 70%,transparent 95%);opacity:0;transition:opacity .7s .22s ease;align-self:stretch;}
+.exp-slide.s-active .exp-sep{opacity:1;}
+
+/* Colonne actes */
+.exp-actes-col{position:relative;z-index:2;padding:52px 56px 52px 50px;display:flex;flex-direction:column;justify-content:center;}
+.exp-actes-title{font-size:.46rem;letter-spacing:.34em;text-transform:uppercase;color:var(--g);margin-bottom:26px;display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(12px);transition:opacity .7s .42s ease,transform .7s .42s ease;}
+.exp-actes-title::after{content:'';flex:1;height:1px;background:rgba(184,134,11,.55);}
+.exp-slide.s-active .exp-actes-title{opacity:1;transform:none;}
+.exp-acte{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(184,134,11,.28);font-size:.63rem;line-height:1.5;color:var(--mu);position:relative;overflow:hidden;cursor:none;opacity:0;transform:translateX(14px);transition:background .4s var(--E),color .35s,opacity .55s ease,transform .55s var(--E);}
+.exp-acte:first-child{border-top:1px solid rgba(184,134,11,.28);}
+.exp-slide.s-active .exp-acte:nth-child(1){opacity:1;transform:none;transition-delay:.48s;}
+.exp-slide.s-active .exp-acte:nth-child(2){opacity:1;transform:none;transition-delay:.56s;}
+.exp-slide.s-active .exp-acte:nth-child(3){opacity:1;transform:none;transition-delay:.64s;}
+.exp-slide.s-active .exp-acte:nth-child(4){opacity:1;transform:none;transition-delay:.72s;}
+.exp-slide.s-active .exp-acte:nth-child(5){opacity:1;transform:none;transition-delay:.80s;}
+.exp-slide.s-active .exp-acte:nth-child(6){opacity:1;transform:none;transition-delay:.88s;}
+.exp-acte:hover{color:var(--tx2);}
+.exp-acte::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,transparent 0%,rgba(184,134,11,.4) 15%,var(--g) 50%,rgba(184,134,11,.4) 85%,transparent 100%);transform:scaleY(0);transform-origin:center;transition:transform .65s var(--E);}
+.exp-acte:hover::before{transform:scaleY(1);}
+.exp-acte::after{content:'';position:absolute;top:0;bottom:0;left:4px;width:1px;background:linear-gradient(180deg,transparent,rgba(184,134,11,.35) 30%,rgba(184,134,11,.35) 70%,transparent);transform:scaleY(0);transform-origin:center;opacity:0;transition:transform .75s .05s var(--E),opacity .4s ease;}
+.exp-acte:hover::after{transform:scaleY(1);opacity:1;}
+.exp-acte-dot{width:4px;height:4px;border-radius:50%;background:var(--g);flex-shrink:0;transition:background .35s,transform .35s;}
+.exp-acte:hover .exp-acte-dot{background:var(--g);transform:scale(1.4);}
+.exp-acte-vdot{position:absolute;left:0;top:50%;width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 8px 2px rgba(184,134,11,.5);transform:translate(-50%,-50%) scale(0);margin-left:1.5px;opacity:0;transition:transform .4s .35s var(--E),opacity .4s .35s;z-index:3;}
+.exp-acte:hover .exp-acte-vdot{transform:translate(-50%,-50%) scale(1);opacity:1;box-shadow:0 0 14px 4px rgba(212,160,18,.45);}
+.exp-acte-text{position:relative;z-index:1;color:var(--dk);}
+.exp-acte-arrow{display:none;}
+
+/* CTA FINAL */
+#cta-final{position:relative;background:var(--bg);overflow:hidden;border-top:1px solid rgba(184,134,11,.22);display:flex;align-items:center;justify-content:center;min-height:80vh;}
+.cf-rings{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;will-change:transform;}
+.cf-ring{position:absolute;border-radius:50%;border:1px solid transparent;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);transition:transform 1.6s var(--E),border-color .6s ease;}
+#cta-final.in-view .cf-ring{transform:translate(-50%,-50%) scale(1);}
+.cf-ring:nth-child(1){width:100px;height:100px;border-color:rgba(184,135,11,.80);transition-delay:0s;}
+.cf-ring:nth-child(2){width:260px;height:260px;border-color:rgba(184,135,11,.48);transition-delay:.12s;}
+.cf-ring:nth-child(3){width:460px;height:460px;border-color:rgba(184,135,11,.38);transition-delay:.24s;}
+.cf-ring:nth-child(4){width:700px;height:700px;border-color:rgba(184,135,11,.25);transition-delay:.36s;}
+.cf-ring:nth-child(5){width:980px;height:980px;border-color:rgba(184,135,11,.14);transition-delay:.48s;}
+.cf-ring:nth-child(6){width:1320px;height:1320px;border-color:rgba(184,134,11,.05);transition-delay:.6s;}
+.cf-center{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:var(--g);box-shadow:0 0 24px 6px rgba(212,160,18,.4);transform:translate(-50%,-50%) scale(0);z-index:3;transition:transform .5s .05s var(--E);will-change:transform;}
+#cta-final.in-view .cf-center{transform:translate(-50%,-50%) scale(1);}
+#cta-final::before{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 55% 60% at 50% 50%,rgba(184,134,11,.09) 0%,transparent 60%);pointer-events:none;}
+.cf-deco{position:absolute;right:-4%;bottom:-8%;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(22rem,36vw,48rem);line-height:1;color:rgba(184,134,11,.04);pointer-events:none;user-select:none;z-index:1;}
+.cf-side{position:absolute;left:72px;top:50%;transform:translateY(-50%) rotate(-90deg);font-size:.42rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(184,135,11,.80);white-space:nowrap;z-index:3;opacity:0;transition:opacity .8s 1.1s ease;}
+#cta-final.in-view .cf-side{opacity:1;}
+.cf-body{position:relative;z-index:3;text-align:center;padding:100px 80px;max-width:700px;}
+.cf-tag{display:inline-flex;align-items:center;gap:12px;margin-bottom:36px;opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease;}
+#cta-final.in-view .cf-tag{opacity:1;transform:none;}
+.cf-tag-bar{width:22px;height:1px;background:var(--gl);}
+.cf-tag span{font-size:.54rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gl);}
+.cf-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(4.5rem,8.5vw,9.5rem);line-height:.93;letter-spacing:-0.06em;margin-bottom:0;}
+.cf-tline{display:block;overflow:visible;padding-bottom:.12em;}
+.cf-tspan{display:block;transform:translateY(110%);opacity:0;transition:transform .95s var(--E),opacity .95s ease;}
+#cta-final.in-view .cf-tline:nth-child(1) .cf-tspan{transform:none;opacity:1;transition-delay:.08s;}
+#cta-final.in-view .cf-tline:nth-child(2) .cf-tspan{transform:none;opacity:1;transition-delay:.2s;}
+#cta-final.in-view .cf-tline:nth-child(3) .cf-tspan{transform:none;opacity:1;transition-delay:.32s;}
+.cf-tline:nth-child(1) .cf-tspan{color:var(--gl);}
+.cf-tline:nth-child(2) .cf-tspan{color:rgba(18,18,17,.65);font-style:italic;}
+.cf-tline:nth-child(3) .cf-tspan{color:var(--dk);}
+.cf-rule{width:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,160,18,.60),transparent);margin:32px auto;transition:width 1.1s .55s var(--E);}
+#cta-final.in-view .cf-rule{width:80px;}
+.cf-desc{font-size:.76rem;line-height:2;color:rgba(39,37,34,.70);max-width:380px;margin:0 auto 44px;opacity:0;transform:translateY(12px);transition:opacity .9s .65s ease,transform .9s .65s ease;}
+#cta-final.in-view .cf-desc{opacity:1;transform:none;}
+.cf-btns{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;opacity:0;transform:translateY(10px);transition:opacity .8s .8s ease,transform .8s .8s ease;}
+#cta-final.in-view .cf-btns{opacity:1;transform:none;}
+
+/* FOOTER */
+footer{padding:0 72px;border-top:1px solid var(--ln);background:var(--bg1);display:flex;align-items:center;justify-content:space-between;min-height:80px;}
+.footer-logo img{height:50px;width:auto;}
+.fcopy{font-size:.52rem;letter-spacing:.08em;color:rgba(26,23,20,.75);}
+.flinks{display:flex;gap:18px;}
+.flinks a{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(26,23,20,.72);text-decoration:none;cursor:none;transition:color .3s;}
+.flinks a:hover{color:var(--g);}
+
+/* HAMBURGER — extrait exact de NV.html (référence) */
+.nav-burger{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  gap:5px;
+  width:36px;height:36px;
+  background:none;border:none;padding:4px;
+  cursor:pointer;
+  flex-shrink:0;
+  z-index:501;
+}
+.nav-burger span{
+  display:block;width:22px;height:1px;
+  background:var(--tx);
+  transition:transform .4s var(--E),opacity .3s ease,width .4s var(--E);
+  transform-origin:center;
+}
+.nav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;width:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+#nav-mobile{
+  position:fixed;
+  inset:0;
+  z-index:490;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  align-items:flex-end;justify-content:center;
+  padding:0 48px 0 0;
+  gap:0;
+  transform:translateX(100%);
+  transition:transform .6s var(--E);
+  pointer-events:none;
+}
+#nav-mobile.open{transform:none;pointer-events:all;}
+
+/* Filet vertical doré à droite */
+#nav-mobile::after{
+  content:'';
+  position:absolute;
+  right:0;top:10%;bottom:10%;
+  width:2px;
+  background:linear-gradient(180deg,transparent,var(--g) 30%,var(--g) 70%,transparent);
+}
+
+.nm-link{
+  display:block;
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(3.3rem,10vw,5rem);
+  letter-spacing:-.02em;
+  line-height:1;
+  color:var(--g);
+  text-decoration:none;
+  padding:18px 0;
+  text-align:right;
+  position:relative;
+  overflow:hidden;
+  opacity:0;
+  transform:translateX(40px);
+  transition:color .3s, opacity .5s var(--E), transform .5s var(--E);
+}
+#nav-mobile.open .nm-link:nth-child(1){opacity:1;transform:none;transition-delay:.08s;}
+#nav-mobile.open .nm-link:nth-child(3){opacity:1;transform:none;transition-delay:.16s;}
+#nav-mobile.open .nm-link:nth-child(5){opacity:1;transform:none;transition-delay:.24s;}
+#nav-mobile.open .nm-link:nth-child(7){opacity:1;transform:none;transition-delay:.32s;}
+#nav-mobile.open .nm-link:nth-child(9){opacity:1;transform:none;transition-delay:.40s;}
+#nav-mobile.open .nm-link:nth-child(11){opacity:1;transform:none;transition-delay:.48s;}
+
+.nm-link::before{
+  content:attr(data-label);
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:flex-end;
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(3.6rem,12vw,5.4rem);
+  color:var(--gd);
+  transform:translateY(105%);
+  transition:transform .4s var(--E);
+}
+.nm-link:hover{color:transparent;}
+.nm-link:hover::before{transform:translateY(0);}
+
+.nm-rule{
+  width:28px;height:1px;
+  background:var(--ln);
+  margin:0 0 0 auto;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+#nav-mobile.open .nm-rule{opacity:1;}
+#nav-mobile.open .nm-rule:nth-child(2){transition-delay:.12s;}
+#nav-mobile.open .nm-rule:nth-child(4){transition-delay:.20s;}
+#nav-mobile.open .nm-rule:nth-child(6){transition-delay:.28s;}
+#nav-mobile.open .nm-rule:nth-child(8){transition-delay:.36s;}
+#nav-mobile.open .nm-rule:nth-child(10){transition-delay:.44s;}
+
+.nm-rdv{
+  margin-top:36px;display:inline-block;
+  position:relative;overflow:hidden;
+  padding:15px 38px;
+  border:1.5px solid var(--g);
+  color:var(--g);
+  text-decoration:none;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  opacity:0;transform:translateX(20px);
+  transition:color .4s var(--E), opacity .5s .52s var(--E), transform .5s .52s var(--E);
+}
+#nav-mobile.open .nm-rdv{opacity:1;transform:none;}
+.nm-rdv::before{
+  content:'';position:absolute;inset:0;
+  background:var(--g);
+  transform:translateY(101%);
+  transition:transform .4s var(--E);
+}
+.nm-rdv:hover{color:#fff;}
+.nm-rdv:hover::before{transform:translateY(0);}
+.nm-rdv span{position:relative;z-index:1;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  #exp-scroll-area{height:auto !important;}
+  #exp-stage{position:relative;height:auto !important;}
+  #exp-prog,#exp-dots,#exp-hint,#exp-counter-num{display:none !important;}
+  #exp-panel{position:relative;}
+  .exp-slide{position:relative;opacity:1 !important;transform:none !important;pointer-events:auto !important;display:flex;min-height:80vh;border-bottom:1px solid var(--ln);}
+  .exp-slide .exp-num-vbar{transform:scaleY(1) !important;}
+  .exp-slide .exp-num-label{color:rgba(184,134,11,.18) !important;transform:rotate(180deg) translateY(0) !important;opacity:1 !important;}
+  .exp-slide .exp-bg-num{color:rgba(184,134,11,.10) !important;}
+  .exp-slide .exp-label-inner{transform:translateX(0) !important;opacity:1 !important;}
+  .exp-slide .exp-tspan{transform:none !important;}
+  .exp-slide .exp-rule{width:44px !important;}
+  .exp-slide .exp-lead,.exp-slide .exp-body,.exp-slide .exp-cta{opacity:1 !important;transform:none !important;}
+  .exp-slide .exp-sep{opacity:1 !important;}
+  .exp-slide .exp-actes-title{opacity:1 !important;transform:none !important;}
+  .exp-slide .exp-acte{opacity:1 !important;transform:none !important;}
+  #exp-tabs-bar{position:sticky;top:0;height:auto;padding:0 36px;}
+  .exp-tab{height:auto;padding:15px 0;}
+  .exp-num-col{flex:0 0 auto;flex-direction:row;align-items:center;padding:24px 36px 0;border-right:none;border-bottom:1px solid var(--ln);}
+  .exp-num-label{writing-mode:horizontal-tb !important;transform:none !important;font-size:4rem;padding-right:0;}
+  .exp-num-vbar{display:none;}
+  .exp-main{grid-template-columns:1fr;padding-top:0;}
+  .exp-sep{display:none;}
+  .exp-txt{padding:40px 36px 32px;}
+  .exp-actes-col{padding:0 36px 52px;}
+  .cf-vlines,.cf-side{display:none;}
+  .cf-body{padding:80px 36px;}
+  #nav,#nav.on{padding:12px 36px;}
+  #hero{padding:0 36px 60px;}
+  .he-vline,.he-vline-dot{left:36px;}
+  .he-body{padding-left:36px;}
+  footer{padding:20px 36px;}
+}
+@media(max-width:768px){
+  body{cursor:auto;}
+  #dot,#ring{display:none;}
+  #nav{padding:0 20px !important;height:64px;}
+  #nav.on{padding:0 20px !important;}
+  .nav-logo img{height:52px;}
+  .nav-ul{display:none;}
+  .nav-burger{display:flex;}
+  .nrdv{padding:7px 14px;font-size:.5rem;}
+  #hero{padding:0 20px 48px !important;min-height:auto;}
+  .he-vline,.he-vline-dot{left:20px !important;}
+  .he-body{padding-left:16px !important;padding-top:100px;}
+  .he-deco{display:none;}
+  #exp-tabs-bar{padding:0 12px !important;overflow-x:auto;}
+  .exp-tab{margin-right:16px;font-size:.44rem;}
+  .exp-num-col{display:none !important;}
+  .exp-txt{padding:32px 20px 24px !important;}
+  .exp-actes-col{padding:0 20px 40px !important;}
+  #cta-final{min-height:auto;}
+  .cf-deco{display:none;}
+  .cf-body{padding:64px 20px !important;}
+  .cf-btns{flex-direction:column;align-items:center;}
+  footer{flex-direction:column !important;gap:14px;padding:24px 20px !important;text-align:center;}
+  .flinks{justify-content:center;}
+  .footer-logo img{height:38px;}
+}
+@media(max-width:1200px) and (min-width:1025px){
+  .exp-main{grid-template-columns:1fr 1px 260px;}
+  .exp-actes-col{padding:52px 40px 52px 36px;}
+  .exp-txt{padding:52px 56px 52px 56px;}
+}
+</style>
+</head>
+<body>
+
+<div id="dot"></div>
+<div id="ring"></div>
+
+<nav id="nav">
+  <a href="NV.html" class="nav-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
+  <ul class="nav-ul">
+    <li><a href="NV.html">Accueil</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="LE.html">L'Étude</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="NE.html" class="active">Nos Expertises</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="EQ.html">L'Équipe</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="CT.html">Contact</a></li>
+    <li><a href="CT.html" class="nrdv"><span>Prendre rendez-vous</span></a></li>
+  </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="nav-mobile">
+  <a href="NV.html" class="nm-link" data-label="Accueil">Accueil</a>
+  <div class="nm-rule"></div>
+  <a href="LE.html" class="nm-link" data-label="L'Étude">L'Étude</a>
+  <div class="nm-rule"></div>
+  <a href="NE.html" class="nm-link active" data-label="Nos Expertises">Nos Expertises</a>
+  <div class="nm-rule"></div>
+  <a href="EQ.html" class="nm-link" data-label="L'Équipe">L'Équipe</a>
+  <div class="nm-rule"></div>
+  <a href="CT.html" class="nm-link" data-label="Contact">Contact</a>
+  <a href="CT.html" class="nm-rdv"><span>Prendre rendez-vous</span></a>
+</div>
+
+<section id="hero">
+  <div class="he-deco">E</div>
+  <div class="he-vline" id="heVline"></div>
+  <div class="he-vline-dot"></div>
+  <div class="he-body">
+    <div class="he-tag"><div class="he-tag-bar"></div><span>4 domaines d'intervention</span></div>
+    <h1 class="he-title">
+      <span class="ht-l1"><span>Nos Expertises</span></span>
+      <span class="ht-l2"><span>Droit, rigueur, précision.</span></span>
+    </h1>
+    <div class="he-rule"></div>
+    <p class="he-sub">Chaque dossier bénéficie d'une attention personnalisée et d'une exécution irréprochable. Nos deux notaires maîtrisent l'ensemble du spectre notarial avec une expertise reconnue dans le Vexin.</p>
+  </div>
+</section>
+
+<div id="exp-scroll-area">
+  <div id="exp-stage">
+    <div id="exp-tabs-bar">
+      <a href="#" class="exp-tab active" data-idx="0" id="immobilier"><span class="exp-tab-n">01</span><span>Droit Immobilier</span></a>
+      <a href="#" class="exp-tab" data-idx="1" id="famille"><span class="exp-tab-n">02</span><span>Droit de la Famille</span></a>
+      <a href="#" class="exp-tab" data-idx="2" id="patrimoine"><span class="exp-tab-n">03</span><span>Gestion de Patrimoine</span></a>
+      <a href="#" class="exp-tab" data-idx="3" id="rural"><span class="exp-tab-n">04</span><span>Droit Rural</span></a>
+    </div>
+    <div id="exp-prog"><div id="exp-prog-fill"></div><div id="exp-prog-dot"></div></div>
+    <div id="exp-dots">
+      <div class="exp-dot active" data-idx="0"></div>
+      <div class="exp-dot" data-idx="1"></div>
+      <div class="exp-dot" data-idx="2"></div>
+      <div class="exp-dot" data-idx="3"></div>
+    </div>
+    <div id="exp-counter-num">01 / 04</div>
+    <div id="exp-hint"><span class="hint-txt">Défiler</span><div class="hint-bar"></div></div>
+
+    <div id="exp-panel">
+
+      <!-- SLIDE 01 -->
+      <div class="exp-slide s-active" data-idx="0">
+        <div class="exp-num-col"><div class="exp-num-vbar"></div><div class="exp-num-label">01</div></div>
+        <div class="exp-main">
+          <div class="exp-bg-num">01</div>
+          <div class="exp-txt">
+            <div class="exp-label"><div class="exp-label-inner"><span class="exp-label-n">01</span><div class="exp-label-sep"><span class="exp-label-bar"></span><span class="exp-label-txt">Expertise</span></div></div></div>
+            <div class="exp-title">
+              <span class="exp-tline"><span class="exp-tspan">Droit</span></span>
+              <span class="exp-tline"><span class="exp-tspan"><em>Immobilier</em></span></span>
+            </div>
+            <div class="exp-rule"></div>
+            <p class="exp-lead">De la promesse à la signature, nous sécurisons chacune de vos transactions immobilières avec une vigilance absolue.</p>
+            <p class="exp-body">Notre étude accompagne particuliers et professionnels dans toutes les étapes de leurs projets immobiliers. Forts de notre ancrage local dans le Vexin, nous disposons d'une connaissance approfondie du marché foncier régional.</p>
+            <div class="exp-cta"><a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a></div>
+          </div>
+          <div class="exp-sep"></div>
+          <div class="exp-actes-col">
+            <div class="exp-actes-title">Actes notaries</div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Promesses de vente</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Actes de vente</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Divisions parcellaires</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Servitudes</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Baux commerciaux</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Droits de préemption</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 02 -->
+      <div class="exp-slide" data-idx="1">
+        <div class="exp-num-col"><div class="exp-num-vbar"></div><div class="exp-num-label">02</div></div>
+        <div class="exp-main">
+          <div class="exp-bg-num">02</div>
+          <div class="exp-txt">
+            <div class="exp-label"><div class="exp-label-inner"><span class="exp-label-n">02</span><div class="exp-label-sep"><span class="exp-label-bar"></span><span class="exp-label-txt">Expertise</span></div></div></div>
+            <div class="exp-title">
+              <span class="exp-tline"><span class="exp-tspan">Droit de</span></span>
+              <span class="exp-tline"><span class="exp-tspan"><em>la Famille</em></span></span>
+            </div>
+            <div class="exp-rule"></div>
+            <p class="exp-lead">Mariage, succession, donation, nous vous accompagnons dans chaque tournant de la vie avec tact et confidentialité absolue.</p>
+            <p class="exp-body">Les actes familiaux engagent l'avenir de vos proches. Notre étude prend le temps d'écouter chaque situation particulière pour proposer les solutions juridiques les plus adaptées.</p>
+            <div class="exp-cta"><a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a></div>
+          </div>
+          <div class="exp-sep"></div>
+          <div class="exp-actes-col">
+            <div class="exp-actes-title">Actes notaries</div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Contrats de mariage</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">PACS</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Successions</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Donations-partages</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Testaments</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Régimes matrimoniaux</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 03 -->
+      <div class="exp-slide" data-idx="2">
+        <div class="exp-num-col"><div class="exp-num-vbar"></div><div class="exp-num-label">03</div></div>
+        <div class="exp-main">
+          <div class="exp-bg-num">03</div>
+          <div class="exp-txt">
+            <div class="exp-label"><div class="exp-label-inner"><span class="exp-label-n">03</span><div class="exp-label-sep"><span class="exp-label-bar"></span><span class="exp-label-txt">Expertise</span></div></div></div>
+            <div class="exp-title">
+              <span class="exp-tline"><span class="exp-tspan">Gestion de</span></span>
+              <span class="exp-tline"><span class="exp-tspan"><em>Patrimoine</em></span></span>
+            </div>
+            <div class="exp-rule"></div>
+            <p class="exp-lead">Structurer, optimiser et transmettre votre patrimoine dans les meilleures conditions fiscales et juridiques.</p>
+            <p class="exp-body">La gestion patrimoniale requiert une vision globale et une expertise pluridisciplinaire. Notre étude analyse votre situation pour vous proposer des stratégies adaptées à vos objectifs de transmission.</p>
+            <div class="exp-cta"><a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a></div>
+          </div>
+          <div class="exp-sep"></div>
+          <div class="exp-actes-col">
+            <div class="exp-actes-title">Actes notaries</div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Création de SCI</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Démembrements</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Pactes Dutreil</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Optimisation fiscale</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">SAS / SARL familiales</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Mandats de protection</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 04 -->
+      <div class="exp-slide" data-idx="3">
+        <div class="exp-num-col"><div class="exp-num-vbar"></div><div class="exp-num-label">04</div></div>
+        <div class="exp-main">
+          <div class="exp-bg-num">04</div>
+          <div class="exp-txt">
+            <div class="exp-label"><div class="exp-label-inner"><span class="exp-label-n">04</span><div class="exp-label-sep"><span class="exp-label-bar"></span><span class="exp-label-txt">Expertise</span></div></div></div>
+            <div class="exp-title">
+              <span class="exp-tline"><span class="exp-tspan">Droit</span></span>
+              <span class="exp-tline"><span class="exp-tspan"><em>Rural</em></span></span>
+            </div>
+            <div class="exp-rule"></div>
+            <p class="exp-lead">Une expertise rare au service des agriculteurs, éleveurs et propriétaires fonciers du Vexin et de ses environs.</p>
+            <p class="exp-body">Le droit rural est une matière exigeante, à la croisée du droit civil, du droit agraire et des réglementations environnementales. Notre implantation historique nous confère une maîtrise approfondie des problématiques foncières.</p>
+            <div class="exp-cta"><a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a></div>
+          </div>
+          <div class="exp-sep"></div>
+          <div class="exp-actes-col">
+            <div class="exp-actes-title">Actes notaries</div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Baux ruraux</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Baux à ferme</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Cessions d'exploitations</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">GAEC &#183; EARL</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Remembrements</span></div>
+            <div class="exp-acte"><span class="exp-acte-vdot"></span><div class="exp-acte-dot"></div><span class="exp-acte-text">Droits SAFER</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<section id="cta-final">
+  <div class="cf-vlines"><div class="cf-vline"></div><div class="cf-vline"></div><div class="cf-vline"></div><div class="cf-vline"></div><div class="cf-vline"></div></div>
+  <div class="cf-rings"><div class="cf-ring"></div><div class="cf-ring"></div><div class="cf-ring"></div><div class="cf-ring"></div><div class="cf-ring"></div><div class="cf-ring"></div></div>
+  <div class="cf-center"></div>
+  <div class="cf-deco">N</div>
+  <div class="cf-side">NOTAVEXIN &#8212; Étude Notariale &#8212; Vexin Normand</div>
+  <div class="cf-body">
+    <div class="cf-tag"><div class="cf-tag-bar"></div><span>Nous contacter</span></div>
+    <h2 class="cf-title">
+      <span class="cf-tline"><span class="cf-tspan">Parlons</span></span>
+      <span class="cf-tline"><span class="cf-tspan">de votre</span></span>
+      <span class="cf-tline"><span class="cf-tspan">projet</span></span>
+    </h2>
+    <div class="cf-rule"></div>
+    <p class="cf-desc">Notre équipe vous reçoit sur rendez-vous du lundi au vendredi, de 9h à 17h30. Chaque consultation est traitée avec la plus stricte confidentialité.</p>
+    <div class="cf-btns">
+      <a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="NV.html" class="footer-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
+  <span class="fcopy">&#169; 2026 NOTAVEXIN &#8212; Tous droits réservés</span>
+  <div class="flinks"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* CURSOR */
+var dot=document.getElementById("dot"),ring=document.getElementById("ring");
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener("mousemove",function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+"px";dot.style.top=my+"px";});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(loop);})();
+document.querySelectorAll("a,button,.exp-acte,.exp-dot").forEach(function(el){
+  el.addEventListener("mouseenter",function(){document.body.classList.add("hov");});
+  el.addEventListener("mouseleave",function(){document.body.classList.remove("hov");});
+});
+
+/* NAV */
+function checkNav(){document.getElementById("nav").classList.toggle("on",window.scrollY>60);}
+window.addEventListener("scroll",checkNav,{passive:true});checkNav();
+
+/* HAMBURGER */
+var burger=document.getElementById("navBurger");
+var navMob=document.getElementById("nav-mobile");
+if(burger&&navMob){
+  burger.addEventListener("click",function(){
+    var open=burger.classList.toggle("open");
+    navMob.classList.toggle("open",open);
+    document.body.style.overflow=open?"hidden":"";
+  });
+  navMob.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click",function(){
+      burger.classList.remove("open");
+      navMob.classList.remove("open");
+      document.body.style.overflow="";
+    });
+  });
+}
+
+/* HERO vline */
+var vl=document.getElementById("heVline");
+if(vl)setTimeout(function(){vl.classList.add("on");},80);
+
+/* CTA FINAL in-view */
+var ctaEl=document.getElementById("cta-final");
+if(ctaEl){
+  new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){ctaEl.classList.add("in-view");this.disconnect();}
+  },{threshold:.15}).observe(ctaEl);
+}
+
+/* PARALLAXE SOURIS cercles CTA */
+(function(){
+  var ringsEl=document.querySelector(".cf-rings");
+  var centerEl=document.querySelector(".cf-center");
+  if(!ringsEl||!ctaEl) return;
+  var tx=0,ty=0,cx=0,cy=0,strength=0,targetStrength=0,isInside=false,rafId=null,AMP=24;
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function tick(){
+    strength=lerp(strength,targetStrength,0.055);
+    cx=lerp(cx,tx,0.075);cy=lerp(cy,ty,0.075);
+    var fx=cx*strength,fy=cy*strength;
+    ringsEl.style.transform="translate(calc(-50% + "+fx+"px), calc(-50% + "+fy+"px))";
+    centerEl.style.left="calc(50% + "+fx+"px)";
+    centerEl.style.top="calc(50% + "+fy+"px)";
+    var stable=Math.abs(strength-targetStrength)<0.0015&&Math.abs(cx-tx)<0.08&&Math.abs(cy-ty)<0.08;
+    if(!stable||isInside){rafId=requestAnimationFrame(tick);}else{rafId=null;}
+  }
+  function start(){if(!rafId)rafId=requestAnimationFrame(tick);}
+  ctaEl.addEventListener("mousemove",function(e){
+    var r=ctaEl.getBoundingClientRect();
+    tx=((e.clientX-r.left)/r.width-.5)*2*AMP;
+    ty=((e.clientY-r.top)/r.height-.5)*2*AMP;
+    if(!isInside){isInside=true;targetStrength=1;}
+    start();
+  });
+  ctaEl.addEventListener("mouseleave",function(){isInside=false;targetStrength=0;tx=0;ty=0;start();});
+})();
+
+/* TABS MOBILE — scroll vers le slide cliqué */
+if(window.innerWidth<=1024){
+  document.querySelectorAll(".exp-tab").forEach(function(tab){
+    tab.addEventListener("click",function(e){
+      e.preventDefault();
+      var idx=parseInt(tab.dataset.idx)||0;
+      var targetSlide=document.querySelectorAll(".exp-slide")[idx];
+      if(targetSlide){
+        targetSlide.scrollIntoView({behavior:"smooth",block:"start"});
+      }
+      document.querySelectorAll(".exp-tab").forEach(function(t){t.classList.remove("active");});
+      tab.classList.add("active");
+    });
+  });
+}
+
+/* SCROLL-JACK */
+var N=4;
+var area=document.getElementById("exp-scroll-area");
+var stage=document.getElementById("exp-stage");
+var slides=document.querySelectorAll(".exp-slide");
+var tabs=document.querySelectorAll(".exp-tab");
+var dots=document.querySelectorAll(".exp-dot");
+var pFill=document.getElementById("exp-prog-fill");
+var pDot=document.getElementById("exp-prog-dot");
+var hint=document.getElementById("exp-hint");
+var cnum=document.getElementById("exp-counter-num");
+var cur=0,animating=false,ANIM_MS=720;
+
+if(window.innerWidth<=1024){return;}
+
+area.style.height=window.innerHeight+"px";
+window.addEventListener("resize",function(){if(window.innerWidth>1024)area.style.height=window.innerHeight+"px";},{passive:true});
+
+function updateUI(idx){
+  var pct=idx/(N-1)*100;
+  if(pFill)pFill.style.height=pct+"%";
+  if(pDot)pDot.style.top=pct+"%";
+  tabs.forEach(function(t,i){t.classList.toggle("active",i===idx);});
+  dots.forEach(function(d,i){d.classList.toggle("active",i===idx);});
+  if(cnum)cnum.textContent=String(idx+1).padStart(2,"0")+" / 0"+N;
+  if(hint)hint.classList.toggle("hidden",idx>0);
+}
+
+function goTo(newIdx,dir){
+  if(animating||newIdx<0||newIdx>=N||newIdx===cur)return;
+  animating=true;
+  var prev=cur,goDown=(dir==="down");
+  cur=newIdx;
+  var outEl=slides[prev],inEl=slides[newIdx];
+  outEl.classList.remove("s-active");
+  outEl.classList.add(goDown?"s-exit-up":"s-exit-down");
+  inEl.style.transition="none";inEl.style.opacity="0";
+  inEl.style.transform=goDown?"translateY(36px)":"translateY(-36px)";
+  inEl.style.pointerEvents="none";
+  void inEl.offsetHeight;
+  inEl.style.transition="";inEl.style.transform="";inEl.style.opacity="";
+  inEl.style.pointerEvents="";
+  inEl.classList.add("s-active");
+  updateUI(newIdx);
+  setTimeout(function(){outEl.classList.remove("s-exit-up","s-exit-down");outEl.style.pointerEvents="";animating=false;},ANIM_MS);
+}
+
+var stageVisible=false;
+new IntersectionObserver(function(entries){stageVisible=entries[0].isIntersecting;},{threshold:0.4}).observe(stage);
+
+stage.addEventListener("wheel",function(e){
+  if(!stageVisible)return;
+  var d=e.deltaY;
+  if(Math.abs(d)<1)return;
+  if(d>0&&cur<N-1){e.preventDefault();e.stopPropagation();goTo(cur+1,"down");}
+  else if(d<0&&cur>0){e.preventDefault();e.stopPropagation();goTo(cur-1,"up");}
+},{passive:false});
+
+var ty0=0;
+stage.addEventListener("touchstart",function(e){ty0=e.touches[0].clientY;},{passive:true});
+stage.addEventListener("touchmove",function(e){
+  if(!stageVisible)return;
+  var dy=ty0-e.touches[0].clientY;
+  if(Math.abs(dy)<10)return;
+  if(dy>0&&cur<N-1){e.preventDefault();goTo(cur+1,"down");ty0=e.touches[0].clientY;}
+  else if(dy<0&&cur>0){e.preventDefault();goTo(cur-1,"up");ty0=e.touches[0].clientY;}
+},{passive:false});
+
+tabs.forEach(function(tab){
+  tab.addEventListener("click",function(e){
+    e.preventDefault();
+    var idx=parseInt(tab.dataset.idx)||0;
+    goTo(idx,idx>cur?"down":"up");
+  });
+});
+
+dots.forEach(function(d){
+  d.addEventListener("click",function(){
+    var idx=parseInt(d.dataset.idx)||0;
+    goTo(idx,idx>cur?"down":"up");
+  });
+});
+
+updateUI(0);
+var hash = window.location.hash;
+if(hash === "#rural")   goTo(3, "down");
+if(hash === "#patrimoine") goTo(2, "down");
+if(hash === "#famille") goTo(1, "down");
+if(hash === "#immobilier") goTo(0, "down");
+})();
+</script>
+</body>
+</html>
