@@ -1164,8 +1164,10 @@ var canvas=document.getElementById("particles");
 var ctx=canvas.getContext("2d");
 var hero=document.getElementById("hero");
 var GOLD=["rgba(212,160,18,","rgba(184,134,11,","rgba(230,185,60,","rgba(160,115,8,"];
-var W,H,mouse={x:-999,y:-999},particles=[],heroVisible=true,t=0;
+var W,H,mouse={x:-999,y:-999},particles=[],heroVisible=true;
+
 function resize(){W=canvas.width=hero.offsetWidth;H=canvas.height=hero.offsetHeight;}
+
 function makeParticles(){
   particles=[];
   var total=Math.max(80,Math.min(130,Math.floor(W*H/9000)));
@@ -1174,8 +1176,12 @@ function makeParticles(){
     particles.push({bx:Math.random()*W,by:Math.random()*H,x:0,y:0,r:bright?2.8+Math.random()*1.7:1.2+Math.random()*1.6,col:GOLD[Math.floor(Math.random()*GOLD.length)],baseAlpha:bright?0.45+Math.random()*0.35:0.12+Math.random()*0.22,phase:Math.random()*Math.PI*2,freqX:0.0003+Math.random()*0.0005,freqY:0.0002+Math.random()*0.0004,ampX:12+Math.random()*28,ampY:8+Math.random()*22,pulsePhase:Math.random()*Math.PI*2,pulseFreq:0.0008+Math.random()*0.0012,bright:bright});
   }
 }
-function draw(){
-  requestAnimationFrame(draw);if(!heroVisible)return;ctx.clearRect(0,0,W,H);t+=16;
+
+function draw(timestamp){
+  requestAnimationFrame(draw);
+  if(!heroVisible||window.innerWidth<768)return;
+  ctx.clearRect(0,0,W,H);
+  var t=timestamp;
   for(var i=0;i<particles.length;i++){
     var p=particles[i];
     var tx=p.bx+Math.sin(t*p.freqX+p.phase)*p.ampX;
@@ -1189,13 +1195,14 @@ function draw(){
     if(p.bright&&alpha>0.4){ctx.beginPath();ctx.arc(p.x,p.y,p.r*2.2,0,Math.PI*2);ctx.fillStyle=p.col+(alpha*0.12)+")";ctx.fill();}
   }
 }
+
 hero.addEventListener("mousemove",function(e){var r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
 hero.addEventListener("mouseleave",function(){mouse.x=-999;mouse.y=-999;});
 new IntersectionObserver(function(e){heroVisible=e[0].isIntersecting;},{threshold:0}).observe(hero);
-resize();makeParticles();draw();
+resize();makeParticles();requestAnimationFrame(draw);
 window.addEventListener("resize",function(){resize();makeParticles();},{passive:true});
 
-/* CURSOR */
+  /* CURSOR */
 var dot=document.getElementById("dot"),ring=document.getElementById("ring");
 var mx=0,my=0,rx=0,ry=0;
 document.addEventListener("mousemove",function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+"px";dot.style.top=my+"px";});
