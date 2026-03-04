@@ -79,15 +79,15 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 
 /* ══ HERO — fond photo sombre ══ */
 #hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 80px 130px;position:relative;overflow:hidden;background:#0c0a07;}
-.hero-bg{position:absolute;inset:0;background-image:url(VJ.png);background-size:cover;background-position:center 0%;transform:scale(1.06);transition:transform 14s ease;z-index:0;}
+.hero-bg{position:absolute;inset:0;background-image:url(VJ.png);background-size:cover;background-position:center 0%;transform:scale(1.06); filter:brightness(75%);transition:transform 14s ease;z-index:0;}
 #hero:hover .hero-bg{transform:scale(1.0);}
 #hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(8,7,4,.6) 0%,rgba(8,7,4,.18) 42%,rgba(8,7,4,.68) 100%);}
 #particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;}
 .seal{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:sealP 8s ease-in-out infinite;}
-.seal:nth-child(3){width:720px;height:720px;border:1px solid rgba(184, 135, 11, 0.334);animation-delay:0s;}
-.seal:nth-child(4){width:550px;height:550px;border:1.5px solid rgba(184, 135, 11, 0.437);animation-delay:-2s;}
-.seal:nth-child(5){width:378px;height:378px;border:1px solid rgba(184, 135, 11, 0.478);animation-delay:-4s;}
-.seal:nth-child(6){width:210px;height:210px;border:2px solid rgba(184, 135, 11, 0.594);animation-delay:-6s;}
+.seal:nth-child(3){width:720px;height:720px;border:1px solid rgba(184, 135, 11, 0.491);animation-delay:0s;}
+.seal:nth-child(4){width:550px;height:550px;border:1.5px solid rgba(184, 135, 11, 0.63);animation-delay:-2s;}
+.seal:nth-child(5){width:378px;height:378px;border:1px solid rgba(184, 135, 11, 0.706);animation-delay:-4s;}
+.seal:nth-child(6){width:210px;height:210px;border:2px solid rgba(184, 135, 11, 0.756);animation-delay:-6s;}
 @keyframes sealP{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.035);}}
 .txt-ring{position:absolute;width:580px;height:580px;top:50%;left:50%;pointer-events:none;z-index:2;animation:ringR 90s linear infinite;}
 @keyframes ringR{to{transform:translate(-50%,-50%) rotate(360deg);}}
