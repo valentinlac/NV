@@ -441,15 +441,9 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 }
 
 /* Contrôles navigation */
-.avis-controls{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:32px;
-  padding:40px 80px 0;
-}
+.avis-controls{display:none;}
+.avis-dots{display:none !important;}
+.avis-progress{display:none !important;}
 
 /* Boutons flèches */
 .avis-btn{
@@ -692,8 +686,6 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
   .avis-ghost{display:none;}
   .avis-card{width:290px;padding:28px 24px 24px;}
   .avis-track{padding:8px 24px 24px;gap:16px;cursor:default;}
-  .avis-controls{display:none;}
-  .avis-progress{display:none;}
   .avis-score{gap:16px;}
   .avis-score-n{font-size:2.8rem;}
   .avis-dots{display:none;}
@@ -1301,85 +1293,81 @@ expRows.forEach(function(row){
 });
 
 /* ═══════════════════════════════════════════
-   SECTION AVIS — scroll natif + flèches
+   SECTION AVIS — auto-scroll infini fluide
 ═══════════════════════════════════════════ */
 (function(){
   var avisSection = document.getElementById("avis");
-  var outer = document.querySelector(".avis-track-outer");
-  var track = document.getElementById("avisTrack");
-  var cards = track.querySelectorAll(".avis-card");
-  var dotsContainer = document.getElementById("avisDots");
-  var progressFill = document.getElementById("avisProgressFill");
-  var btnPrev = document.getElementById("avisPrev");
-  var btnNext = document.getElementById("avisNext");
-  var N = cards.length;
+  var outer       = document.querySelector(".avis-track-outer");
+  var track       = document.getElementById("avisTrack");
+  var SPEED       = 0.55; /* px par frame — ajuster si besoin */
+  var paused      = false;
+  var isDragging  = false;
 
   /* Init in-view */
   new IntersectionObserver(function(entries){
     if(entries[0].isIntersecting){ avisSection.classList.add("in-view"); this.disconnect(); }
   },{threshold:.15}).observe(avisSection);
 
-  /* Sur mobile : scroll natif pur, pas de JS supplémentaire */
-  if(window.innerWidth <= 768) return;
+  /* Cloner toutes les cartes pour la boucle seamless */
+  var origCards = Array.prototype.slice.call(track.querySelectorAll(".avis-card"));
+  origCards.forEach(function(c){
+    var clone = c.cloneNode(true);
+    clone.setAttribute("aria-hidden","true");
+    track.appendChild(clone);
+  });
 
-  var GAP = 24;
-  function cardWidth(){ return cards[0].offsetWidth + GAP; }
-
-  /* Créer les dots (un par carte) */
-  for(var i=0;i<N;i++){
-    var d=document.createElement("button");
-    d.className="avis-dot"+(i===0?" active":"");
-    d.setAttribute("aria-label","Avis "+(i+1));
-    (function(idx){
-      d.addEventListener("click",function(){
-        outer.scrollTo({left: idx * cardWidth(), behavior:"smooth"});
-      });
-    })(i);
-    dotsContainer.appendChild(d);
+  /* Auto-scroll via requestAnimationFrame */
+  function tick(){
+    if(!paused && !isDragging){
+      outer.scrollLeft += SPEED;
+      /* Boucle seamless : quand on atteint la moitié (fin des cartes originales),
+         on revient au début sans saut visible */
+      var half = outer.scrollWidth / 2;
+      if(outer.scrollLeft >= half){
+        outer.scrollLeft -= half;
+      }
+    }
+    requestAnimationFrame(tick);
   }
+  /* Laisser le DOM se stabiliser avant de démarrer */
+  requestAnimationFrame(function(){ requestAnimationFrame(tick); });
 
-  /* Mettre à jour dots + progress selon scrollLeft */
-  function updateUI(){
-    var maxScroll = outer.scrollWidth - outer.offsetWidth;
-    var pct = maxScroll <= 0 ? 100 : (outer.scrollLeft / maxScroll) * 100;
-    if(progressFill) progressFill.style.width = pct + "%";
-    var active = Math.round(outer.scrollLeft / cardWidth());
-    dotsContainer.querySelectorAll(".avis-dot").forEach(function(d,i){
-      d.classList.toggle("active", i === active);
-    });
-  }
-  outer.addEventListener("scroll", updateUI, {passive:true});
+  /* ── Desktop : pause au survol des cartes uniquement ── */
+  track.addEventListener("mouseover", function(e){
+    if(e.target.closest(".avis-card")) paused = true;
+  });
+  track.addEventListener("mouseout", function(e){
+    if(e.target.closest(".avis-card") && !isDragging) paused = false;
+  });
 
-  /* Flèches */
-  btnPrev.addEventListener("click", function(){ outer.scrollBy({left: -cardWidth(), behavior:"smooth"}); });
-  btnNext.addEventListener("click", function(){ outer.scrollBy({left:  cardWidth(), behavior:"smooth"}); });
-
-  /* Drag souris libre */
-  var isDragging=false, dragStartX=0, scrollStart=0;
+  /* ── Desktop : drag souris libre ── */
+  var dragStartX = 0, scrollStart = 0;
   track.addEventListener("mousedown", function(e){
-    isDragging=true; dragStartX=e.clientX; scrollStart=outer.scrollLeft;
+    isDragging = true; paused = true;
+    dragStartX = e.clientX; scrollStart = outer.scrollLeft;
     track.classList.add("dragging");
     e.preventDefault();
   });
   document.addEventListener("mousemove", function(e){
     if(!isDragging) return;
     outer.scrollLeft = scrollStart - (e.clientX - dragStartX);
+    /* Gérer la boucle pendant le drag */
+    var half = outer.scrollWidth / 2;
+    if(outer.scrollLeft < 0)    outer.scrollLeft += half;
+    if(outer.scrollLeft >= half) outer.scrollLeft -= half;
   });
   document.addEventListener("mouseup", function(){
     if(!isDragging) return;
-    isDragging=false;
+    isDragging = false;
     track.classList.remove("dragging");
+    /* Reprendre sauf si le curseur est encore sur une carte */
+    if(!e.target.closest(".avis-card")) paused = false;
   });
 
-  /* Clavier */
-  document.addEventListener("keydown", function(e){
-    var rect = avisSection.getBoundingClientRect();
-    if(rect.bottom < 0 || rect.top > window.innerHeight) return;
-    if(e.key==="ArrowLeft") outer.scrollBy({left:-cardWidth(), behavior:"smooth"});
-    if(e.key==="ArrowRight") outer.scrollBy({left: cardWidth(), behavior:"smooth"});
-  });
-
-  updateUI();
+  /* ── Mobile : pause au toucher d'une carte ── */
+  track.addEventListener("touchstart", function(){ paused = true;  }, {passive:true});
+  track.addEventListener("touchend",   function(){ paused = false; }, {passive:true});
+  track.addEventListener("touchcancel",function(){ paused = false; }, {passive:true});
 })();
 
 })();
