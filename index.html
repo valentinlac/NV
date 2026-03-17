@@ -295,21 +295,21 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 .avis-track-outer{
   position:relative;
   z-index:2;
-  overflow:hidden;
-  -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  mask-image:linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
 }
+.avis-track-outer::-webkit-scrollbar{display:none;}
 .avis-track{
   display:flex;
   gap:24px;
   padding:8px 80px 24px;
-  transition:transform .75s var(--E);
-  will-change:transform;
   cursor:grab;
   user-select:none;
 }
 .avis-track.dragging{
-  transition:none;
   cursor:grabbing;
 }
 
@@ -691,9 +691,9 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
   .avis-head{padding:0 24px;margin-bottom:44px;}
   .avis-ghost{display:none;}
   .avis-card{width:290px;padding:28px 24px 24px;}
-  .avis-track{padding:8px 24px 24px;gap:16px;}
-  .avis-controls{padding:28px 24px 0;gap:20px;}
-  .avis-progress{margin:14px 24px 0;}
+  .avis-track{padding:8px 24px 24px;gap:16px;cursor:default;}
+  .avis-controls{display:none;}
+  .avis-progress{display:none;}
   .avis-score{gap:16px;}
   .avis-score-n{font-size:2.8rem;}
   .avis-dots{display:none;}
@@ -768,7 +768,6 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
     <p class="h-sub">Une étude d'exception fondée sur la rigueur, la confindentialité et une connaissance approfondie du droit français depuis deux siècles.</p>
     <div class="h-cta">
       <a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a>
-      <a href="NE.html" class="bg-btn">Nos expertises &nbsp;→</a>
     </div>
   </div>
   <div class="h-scroll"><span></span><div class="h-scroll-bar"></div></div>
@@ -1302,10 +1301,11 @@ expRows.forEach(function(row){
 });
 
 /* ═══════════════════════════════════════════
-   SECTION AVIS — Carousel + drag
+   SECTION AVIS — scroll natif + flèches
 ═══════════════════════════════════════════ */
 (function(){
   var avisSection = document.getElementById("avis");
+  var outer = document.querySelector(".avis-track-outer");
   var track = document.getElementById("avisTrack");
   var cards = track.querySelectorAll(".avis-card");
   var dotsContainer = document.getElementById("avisDots");
@@ -1313,144 +1313,73 @@ expRows.forEach(function(row){
   var btnPrev = document.getElementById("avisPrev");
   var btnNext = document.getElementById("avisNext");
   var N = cards.length;
-  var VISIBLE = window.innerWidth <= 768 ? 1.2 : window.innerWidth <= 1024 ? 2.2 : 3.2;
-  var PAGES = Math.ceil(N / Math.floor(VISIBLE));
-  var cur = 0;
-  var GAP = window.innerWidth <= 768 ? 16 : 24;
 
   /* Init in-view */
   new IntersectionObserver(function(entries){
-    if(entries[0].isIntersecting){
-      avisSection.classList.add("in-view");
-      this.disconnect();
-    }
+    if(entries[0].isIntersecting){ avisSection.classList.add("in-view"); this.disconnect(); }
   },{threshold:.15}).observe(avisSection);
 
-  /* Créer les dots */
-  for(var i=0;i<PAGES;i++){
+  /* Sur mobile : scroll natif pur, pas de JS supplémentaire */
+  if(window.innerWidth <= 768) return;
+
+  var GAP = 24;
+  function cardWidth(){ return cards[0].offsetWidth + GAP; }
+
+  /* Créer les dots (un par carte) */
+  for(var i=0;i<N;i++){
     var d=document.createElement("button");
     d.className="avis-dot"+(i===0?" active":"");
-    d.setAttribute("aria-label","Page "+(i+1));
-    d.dataset.idx=i;
-    (function(idx){d.addEventListener("click",function(){goTo(idx);});})(i);
+    d.setAttribute("aria-label","Avis "+(i+1));
+    (function(idx){
+      d.addEventListener("click",function(){
+        outer.scrollTo({left: idx * cardWidth(), behavior:"smooth"});
+      });
+    })(i);
     dotsContainer.appendChild(d);
   }
 
-  function getCardWidth(){
-    return cards[0].offsetWidth + GAP;
-  }
-
-  function goTo(idx){
-    if(idx < 0) idx = 0;
-    if(idx >= PAGES) idx = PAGES - 1;
-    cur = idx;
-    var cardsPerPage = Math.floor(VISIBLE);
-    var offset = cur * cardsPerPage * getCardWidth();
-    var maxOffset = track.scrollWidth - track.parentElement.offsetWidth;
-    if(offset > maxOffset) offset = maxOffset;
-    track.style.transform = "translateX(-"+offset+"px)";
-    /* Update dots */
-    dotsContainer.querySelectorAll(".avis-dot").forEach(function(d,i){
-      d.classList.toggle("active", i === cur);
-    });
-    /* Update progress */
-    var pct = PAGES <= 1 ? 100 : (cur / (PAGES - 1)) * 100;
+  /* Mettre à jour dots + progress selon scrollLeft */
+  function updateUI(){
+    var maxScroll = outer.scrollWidth - outer.offsetWidth;
+    var pct = maxScroll <= 0 ? 100 : (outer.scrollLeft / maxScroll) * 100;
     if(progressFill) progressFill.style.width = pct + "%";
+    var active = Math.round(outer.scrollLeft / cardWidth());
+    dotsContainer.querySelectorAll(".avis-dot").forEach(function(d,i){
+      d.classList.toggle("active", i === active);
+    });
   }
+  outer.addEventListener("scroll", updateUI, {passive:true});
 
-  btnPrev.addEventListener("click", function(){goTo(cur - 1);});
-  btnNext.addEventListener("click", function(){goTo(cur + 1);});
+  /* Flèches */
+  btnPrev.addEventListener("click", function(){ outer.scrollBy({left: -cardWidth(), behavior:"smooth"}); });
+  btnNext.addEventListener("click", function(){ outer.scrollBy({left:  cardWidth(), behavior:"smooth"}); });
 
-  /* Drag / swipe */
-  var dragStart=0, dragDelta=0, isDragging=false, startOffset=0;
-
-  function getCurrentOffset(){
-    var t = track.style.transform;
-    if(!t || t==="none") return 0;
-    var m = t.match(/-?([\d.]+)px/);
-    return m ? parseFloat(m[1]) * (t.indexOf("-") === 11 ? 1 : -1) : 0;
-  }
-
+  /* Drag souris libre */
+  var isDragging=false, dragStartX=0, scrollStart=0;
   track.addEventListener("mousedown", function(e){
-    isDragging=true; dragStart=e.clientX;
-    startOffset=getCurrentOffset();
+    isDragging=true; dragStartX=e.clientX; scrollStart=outer.scrollLeft;
     track.classList.add("dragging");
+    e.preventDefault();
   });
   document.addEventListener("mousemove", function(e){
-    if(!isDragging)return;
-    dragDelta=e.clientX-dragStart;
-    var newX=startOffset+dragDelta;
-    var maxOff=track.scrollWidth-track.parentElement.offsetWidth;
-    newX=Math.max(-maxOff,Math.min(0,newX));
-    track.style.transition="none";
-    track.style.transform="translateX("+newX+"px)";
+    if(!isDragging) return;
+    outer.scrollLeft = scrollStart - (e.clientX - dragStartX);
   });
   document.addEventListener("mouseup", function(){
-    if(!isDragging)return;
+    if(!isDragging) return;
     isDragging=false;
     track.classList.remove("dragging");
-    track.style.transition="";
-    if(Math.abs(dragDelta)>50){
-      goTo(dragDelta<0 ? cur+1 : cur-1);
-    } else {
-      goTo(cur);
-    }
-    dragDelta=0;
   });
 
-  /* Touch */
-  var touchStartX=0, touchStartOffset=0;
-  track.addEventListener("touchstart",function(e){
-    touchStartX=e.touches[0].clientX;
-    touchStartOffset=getCurrentOffset();
-    track.classList.add("dragging");
-  },{passive:true});
-  track.addEventListener("touchmove",function(e){
-    var dx=e.touches[0].clientX-touchStartX;
-    var newX=touchStartOffset+dx;
-    var maxOff=track.scrollWidth-track.parentElement.offsetWidth;
-    newX=Math.max(-maxOff,Math.min(0,newX));
-    track.style.transition="none";
-    track.style.transform="translateX("+newX+"px)";
-  },{passive:true});
-  track.addEventListener("touchend",function(e){
-    track.classList.remove("dragging");
-    track.style.transition="";
-    var dx=e.changedTouches[0].clientX-touchStartX;
-    if(Math.abs(dx)>40){
-      goTo(dx<0?cur+1:cur-1);
-    } else {
-      goTo(cur);
-    }
-  },{passive:true});
-
-  /* Keyboard */
-  document.addEventListener("keydown",function(e){
-    if(!avisSection.getBoundingClientRect || avisSection.getBoundingClientRect().bottom < 0) return;
-    if(e.key==="ArrowLeft") goTo(cur-1);
-    if(e.key==="ArrowRight") goTo(cur+1);
+  /* Clavier */
+  document.addEventListener("keydown", function(e){
+    var rect = avisSection.getBoundingClientRect();
+    if(rect.bottom < 0 || rect.top > window.innerHeight) return;
+    if(e.key==="ArrowLeft") outer.scrollBy({left:-cardWidth(), behavior:"smooth"});
+    if(e.key==="ArrowRight") outer.scrollBy({left: cardWidth(), behavior:"smooth"});
   });
 
-  /* Auto-play doux */
-  var autoTimer = setInterval(function(){
-    if(!document.hidden && avisSection.getBoundingClientRect().top < window.innerHeight * 0.8 && avisSection.getBoundingClientRect().bottom > 0){
-      goTo(cur + 1 < PAGES ? cur + 1 : 0);
-    }
-  }, 6000);
-
-  /* Pause auto au hover */
-  avisSection.addEventListener("mouseenter",function(){clearInterval(autoTimer);});
-
-  goTo(0);
-
-  window.addEventListener("resize",function(){
-    VISIBLE = window.innerWidth <= 768 ? 1.2 : window.innerWidth <= 1024 ? 2.2 : 3.2;
-    GAP = window.innerWidth <= 768 ? 16 : 24;
-    PAGES = Math.ceil(N / Math.floor(VISIBLE));
-    cur = Math.min(cur, PAGES - 1);
-    goTo(cur);
-  },{passive:true});
-
+  updateUI();
 })();
 
 })();
