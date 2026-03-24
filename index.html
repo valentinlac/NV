@@ -21,6 +21,159 @@
   --E  : cubic-bezier(.76,0,.24,1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+/* ══════════════════════════════════════
+   BANNIÈRE COOKIES
+══════════════════════════════════════ */
+#ck-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:800;
+  background:rgba(250,248,244,.97);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--ln);
+  box-shadow:0 -4px 40px rgba(184,134,11,.10);
+  transform:translateY(102%);
+  transition:transform .72s cubic-bezier(.76,0,.24,1);
+  cursor:none;
+}
+#ck-banner.visible{transform:translateY(0);}
+.ck-inner{
+  max-width:1200px;margin:0 auto;
+  padding:28px 72px;
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;
+}
+.ck-text{flex:1;min-width:220px;}
+.ck-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.15rem;letter-spacing:-.01em;color:var(--tx);
+  margin-bottom:7px;
+}
+.ck-desc{
+  font-size:.68rem;line-height:1.85;color:var(--mu);
+  max-width:540px;
+}
+.ck-desc a{color:var(--g);text-decoration:none;border-bottom:1px solid rgba(184,134,11,.3);cursor:none;transition:border-color .3s;}
+.ck-desc a:hover{border-color:var(--g);}
+.ck-actions{display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.ck-btn-accept{
+  display:inline-block;position:relative;overflow:hidden;
+  padding:11px 28px;background:var(--g);border:none;
+  color:#fff;font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
+  cursor:none;transition:box-shadow .4s;
+  box-shadow:0 4px 20px rgba(184,134,11,.28);
+}
+.ck-btn-accept::before{
+  content:'';position:absolute;inset:0;background:var(--gd);
+  transform:translateY(101%);transition:transform .45s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-accept:hover{box-shadow:0 6px 30px rgba(184,134,11,.42);}
+.ck-btn-accept:hover::before{transform:translateY(0);}
+.ck-btn-accept span{position:relative;z-index:1;}
+.ck-btn-refuse{
+  display:inline-block;position:relative;overflow:hidden;
+  padding:11px 28px;background:transparent;
+  border:1.5px solid var(--g);
+  color:var(--g);font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
+  cursor:none;transition:color .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-refuse::before{
+  content:'';position:absolute;inset:0;background:var(--g);
+  transform:translateY(101%);transition:transform .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-refuse:hover{color:#fff;}
+.ck-btn-refuse:hover::before{transform:translateY(0);}
+.ck-btn-refuse span{position:relative;z-index:1;}
+.ck-btn-prefs{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.53rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--mu);cursor:none;background:none;border:none;
+  border-bottom:1px solid rgba(39,37,34,.2);padding-bottom:2px;
+  transition:color .3s,border-color .3s;
+}
+.ck-btn-prefs:hover{color:var(--tx);border-color:var(--tx);}
+
+/* ── PANNEAU PRÉFÉRENCES ── */
+#ck-overlay{
+  position:fixed;inset:0;z-index:850;
+  background:rgba(8,7,4,.55);
+  backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+  cursor:none;
+}
+#ck-overlay.visible{opacity:1;pointer-events:all;}
+#ck-panel{
+  position:fixed;bottom:0;left:0;right:0;z-index:900;
+  background:var(--bg);
+  border-top:1px solid var(--ln);
+  box-shadow:0 -8px 60px rgba(184,134,11,.14);
+  transform:translateY(102%);
+  transition:transform .68s cubic-bezier(.76,0,.24,1);
+  cursor:none;
+  max-height:90vh;overflow-y:auto;
+}
+#ck-panel.visible{transform:translateY(0);}
+.ckp-inner{max-width:760px;margin:0 auto;padding:52px 72px 44px;}
+.ckp-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:20px;margin-bottom:40px;
+}
+.ckp-head-text .ck-title{font-size:1.5rem;margin-bottom:10px;}
+.ckp-close{
+  background:none;border:none;cursor:none;
+  color:var(--mu);font-size:1.4rem;line-height:1;
+  padding:4px;transition:color .3s,transform .3s;flex-shrink:0;margin-top:2px;
+}
+.ckp-close:hover{color:var(--tx);transform:rotate(90deg);}
+.ck-cat{
+  border-top:1px solid var(--ln);padding:26px 0;
+}
+.ck-cat:last-of-type{border-bottom:1px solid var(--ln);}
+.ck-cat-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px;}
+.ck-cat-name{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.05rem;letter-spacing:-.01em;color:var(--tx);
+}
+.ck-cat-desc{font-size:.65rem;line-height:1.85;color:var(--mu);}
+/* Toggle */
+.ck-toggle{
+  position:relative;width:42px;height:24px;flex-shrink:0;cursor:none;
+}
+.ck-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.ck-toggle-track{
+  position:absolute;inset:0;border-radius:12px;
+  background:rgba(184,134,11,.18);border:1.5px solid var(--ln);
+  transition:background .4s,border-color .4s;
+}
+.ck-toggle input:checked~.ck-toggle-track{
+  background:var(--g);border-color:var(--g);
+}
+.ck-toggle-thumb{
+  position:absolute;top:3px;left:3px;
+  width:16px;height:16px;border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+  transition:transform .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-toggle input:checked~.ck-toggle-thumb{transform:translateX(18px);}
+.ck-toggle-locked{
+  width:42px;height:24px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.ck-lock-icon{
+  font-size:.78rem;color:var(--g);opacity:.7;
+}
+.ckp-foot{
+  display:flex;align-items:center;justify-content:flex-end;
+  gap:14px;margin-top:36px;flex-wrap:wrap;
+}
+/* Responsive bannière */
+@media(max-width:760px){
+  .ck-inner{padding:22px 20px;gap:20px;}
+  .ck-actions{width:100%;justify-content:flex-end;}
+  .ckp-inner{padding:36px 20px 32px;}
+}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
 
@@ -544,6 +697,73 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 .carr{color:var(--g);position:relative;z-index:1;opacity:0;transform:translateX(-5px);transition:opacity .35s .08s,transform .35s .08s var(--E);}
 .crow:hover .carr{opacity:1;transform:translateX(0);}
 
+/* ══ MODALE POLITIQUE DE CONFIDENTIALITÉ ══ */
+#pc-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(8,7,4,.60);
+  backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+  cursor:none;
+}
+#pc-overlay.visible{opacity:1;pointer-events:all;}
+#pc-modal{
+  position:fixed;top:50%;left:50%;z-index:1010;
+  width:min(720px,92vw);max-height:82vh;
+  background:var(--bg);
+  border:1px solid var(--ln);
+  box-shadow:0 24px 80px rgba(184,134,11,.16);
+  transform:translate(-50%,-48%);
+  opacity:0;pointer-events:none;
+  transition:transform .6s cubic-bezier(.76,0,.24,1),opacity .5s ease;
+  overflow:hidden;display:flex;flex-direction:column;
+  cursor:none;
+}
+#pc-modal.visible{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+.pc-header{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+  padding:40px 52px 28px;
+  border-bottom:1px solid var(--ln);
+  flex-shrink:0;
+}
+.pc-header-left .pc-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;margin-bottom:10px;
+}
+.pc-header-left .pc-eyebrow::before,.pc-header-left .pc-eyebrow::after{
+  content:'';width:14px;height:1px;background:var(--g);
+}
+.pc-header-left .pc-eyebrow span{
+  font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--g);
+}
+.pc-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.7rem;letter-spacing:-.02em;color:var(--tx);line-height:1.1;
+}
+.pc-close{
+  background:none;border:none;cursor:none;
+  color:var(--mu);font-size:1.3rem;line-height:1;
+  padding:4px;transition:color .3s,transform .3s;flex-shrink:0;
+  margin-top:6px;
+}
+.pc-close:hover{color:var(--tx);transform:rotate(90deg);}
+.pc-body{
+  padding:36px 52px 44px;
+  overflow-y:auto;
+  font-size:.72rem;line-height:1.95;color:var(--mu);
+}
+.pc-body p{margin-bottom:1.2em;}
+.pc-body strong{color:var(--tx);font-weight:400;letter-spacing:.04em;}
+.pc-body address{font-style:normal;margin:1.2em 0;padding:18px 24px;border-left:2px solid var(--g);background:var(--bg2);}
+.pc-body a{color:var(--g);text-decoration:none;border-bottom:1px solid rgba(184,134,11,.3);cursor:none;transition:border-color .3s;}
+.pc-body a:hover{border-color:var(--g);}
+@media(max-width:600px){
+  .pc-header,.pc-body{padding-left:22px;padding-right:22px;}
+}
+#ml-overlay{position:fixed;inset:0;z-index:1000;background:rgba(8,7,4,.60);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .5s ease;cursor:none;}
+#ml-overlay.visible{opacity:1;pointer-events:all;}
+#ml-modal{position:fixed;top:50%;left:50%;z-index:1010;width:min(720px,92vw);max-height:82vh;background:var(--bg);border:1px solid var(--ln);box-shadow:0 24px 80px rgba(184,134,11,.16);transform:translate(-50%,-48%);opacity:0;pointer-events:none;transition:transform .6s cubic-bezier(.76,0,.24,1),opacity .5s ease;overflow:hidden;display:flex;flex-direction:column;cursor:none;}
+#ml-modal.visible{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
+
 /* FOOTER */
 footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);display:flex;align-items:center;justify-content:space-between;}
 .footer-logo img{height:50px;width:auto;}
@@ -706,6 +926,154 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
 
 <div id="dot"></div>
 <div id="ring"></div>
+
+<!-- ══ MODALE POLITIQUE DE CONFIDENTIALITÉ ══ -->
+<div id="pc-overlay" role="presentation"></div>
+<div id="pc-modal" role="dialog" aria-modal="true" aria-label="Politique de confidentialité">
+  <div class="pc-header">
+    <div class="pc-header-left">
+      <div class="pc-eyebrow"><span>RGPD</span></div>
+      <h2 class="pc-title">Politique de<br><em style="font-style:italic;color:var(--g);">confidentialité</em></h2>
+    </div>
+    <button class="pc-close" id="pcClose" aria-label="Fermer">&#x2715;</button>
+  </div>
+  <div class="pc-body">
+    <p>Nous nous engageons à respecter la vie privée de chaque personne dont nous sommes amenés à traiter les données à caractère personnel (dénommées ci-après <strong>«&nbsp;Données personnelles&nbsp;»</strong>).</p>
+    <p>Nous traitons notamment les Données personnelles de nos clients, des personnes qui visitent notre site web et plus globalement de toute personne avec laquelle nous entrons en contact dans le cadre de notre activité de Notaire.</p>
+    <p>Toutes vos Données personnelles sont hébergées sur nos <strong>serveurs internes en France</strong>.</p>
+    <p>Nous veillons à assurer la sécurité de vos Données personnelles, en mettant en œuvre des mesures techniques, juridiques et organisationnelles renforcées.</p>
+    <p>Conformément à la loi n°78-17 du 6 janvier 1978 modifiée relative à l'informatique, aux fichiers et aux libertés, et au règlement européen 2016/679, dit <strong>Règlement Général sur la Protection des Données (RGPD)</strong>, vous disposez d'un droit d'accès, de rectification, de suppression des informations qui vous concernent.</p>
+    <p>Vous pouvez exercer vos droits en vous adressant à :</p>
+    <address>
+      <strong>NOTAVEXIN NOTAIRES</strong><br>
+      8, rue de la République<br>
+      60240 CHAUMONT EN VEXIN
+    </address>
+    <p>Vous avez également le droit de déposer une plainte auprès de la <strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong>, dont le site Internet peut être consulté à l'adresse suivante : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
+    <p>Dans le cadre du fonctionnement de notre Site, nous pouvons déposer des cookies sur les appareils des visiteurs. Ce dépôt de cookies a différents buts, que vous pouvez retrouver au sein de notre <strong>Politique de cookies</strong>. Ce traitement est alors fondé sur votre consentement ou, pour les cookies exclusivement techniques, sur notre intérêt légitime.</p>
+    <p>Pour toute information relative aux cookies utilisés par notre site Internet, nous vous invitons à cliquer sur le lien <strong>«&nbsp;Politique de Cookies&nbsp;»</strong>, en bas de page du site.</p>
+  </div>
+</div>
+<!-- ══ FIN MODALE POLITIQUE DE CONFIDENTIALITÉ ══ -->
+
+<!-- ══ MODALE MENTIONS LÉGALES ══ -->
+<div id="ml-overlay" role="presentation"></div>
+<div id="ml-modal" role="dialog" aria-modal="true" aria-label="Mentions légales">
+  <div class="pc-header">
+    <div class="pc-header-left">
+      <div class="pc-eyebrow"><span>Informations légales</span></div>
+      <h2 class="pc-title">Mentions<br><em style="font-style:italic;color:var(--g);">légales</em></h2>
+    </div>
+    <button class="pc-close" id="mlClose" aria-label="Fermer">&#x2715;</button>
+  </div>
+  <div class="pc-body">
+
+    <p><strong>Éditeur du site</strong></p>
+    <address>
+      <strong>NOTAVEXIN NOTAIRES</strong><br>
+      8, rue de la République<br>
+      60240 CHAUMONT EN VEXIN<br><br>
+      Tél : <a href="tel:0344490002">03 44 49 00 02</a><br>
+      Fax : 03 44 49 01 27
+    </address>
+
+    <p><strong>Identification</strong></p>
+    <address>
+      N° SIRET : 52390909100010
+    </address>
+
+    <p><strong>Directeur de la publication</strong></p>
+    <address>
+      Floriane ANGERAS-LACAILLE
+    </address>
+
+    <p><strong>Hébergement</strong></p>
+    <address>
+      Société APOSTILL<br>
+      48 Rue Saint Jean — 95300 Pontoise<br>
+      <a href="https://apostill.fr/" target="_blank" rel="noopener">apostill.fr</a>
+    </address>
+
+    <p><strong>Médiateur du notariat</strong></p>
+    <p>En cas de litige non résolu avec un Notaire, vous avez la possibilité de saisir le Médiateur du notariat à l'adresse suivante : <a href="https://mediateur-notariat.notaires.fr" target="_blank" rel="noopener">mediateur-notariat.notaires.fr</a> afin de tenter, avec son aide, de trouver une résolution amiable de conflit.</p>
+    <p style="font-size:.62rem;color:rgba(39,37,34,.45);font-style:italic;">Article L 616-1 et R 616-1 du Code de la Consommation</p>
+
+  </div>
+</div>
+<!-- ══ FIN MODALE MENTIONS LÉGALES ══ -->
+
+<!-- ══ BANNIÈRE COOKIES ══ -->
+<div id="ck-overlay" role="presentation"></div>
+
+<div id="ck-banner" role="region" aria-label="Gestion des cookies">
+  <div class="ck-inner">
+    <div class="ck-text">
+      <p class="ck-title">Respect de votre vie privée</p>
+      <p class="ck-desc">
+        Nous utilisons des cookies pour améliorer votre expérience de navigation, mesurer l'audience de notre site et vous proposer des contenus adaptés.
+        Vous pouvez accepter tous les cookies, les refuser ou personnaliser vos préférences.
+        <a href="#" id="ckBannerConfidentialite">Politique de confidentialité</a>
+      </p>
+    </div>
+    <div class="ck-actions">
+      <button class="ck-btn-refuse" id="ckRefuse"><span>Tout refuser</span></button>
+      <button class="ck-btn-accept" id="ckAccept"><span>Tout accepter</span></button>
+      <button class="ck-btn-prefs" id="ckPrefs">Gérer les préférences</button>
+    </div>
+  </div>
+</div>
+
+<div id="ck-panel" role="dialog" aria-modal="true" aria-label="Préférences cookies">
+  <div class="ckp-inner">
+    <div class="ckp-head">
+      <div class="ckp-head-text">
+        <p class="ck-title">Préférences de confidentialité</p>
+        <p class="ck-desc" style="margin-top:0;">Choisissez les catégories de cookies que vous autorisez. Vos préférences sont enregistrées localement et peuvent être modifiées à tout moment.</p>
+      </div>
+      <button class="ckp-close" id="ckPanelClose" aria-label="Fermer">&#x2715;</button>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies essentiels</span>
+        <span class="ck-toggle-locked" title="Toujours actifs">
+          <span class="ck-lock-icon">&#x1F512;</span>
+        </span>
+      </div>
+      <p class="ck-cat-desc">Indispensables au fonctionnement du site : navigation, sécurité, mémorisation de vos préférences de cookies. Ils ne peuvent pas être désactivés.</p>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies analytiques</span>
+        <label class="ck-toggle" aria-label="Activer les cookies analytiques">
+          <input type="checkbox" id="ck-analytics">
+          <span class="ck-toggle-track"></span>
+          <span class="ck-toggle-thumb"></span>
+        </label>
+      </div>
+      <p class="ck-cat-desc">Nous permettent de mesurer l'audience et d'analyser l'utilisation du site afin d'en améliorer les performances et le contenu (ex. Google Analytics).</p>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies marketing</span>
+        <label class="ck-toggle" aria-label="Activer les cookies marketing">
+          <input type="checkbox" id="ck-marketing">
+          <span class="ck-toggle-track"></span>
+          <span class="ck-toggle-thumb"></span>
+        </label>
+      </div>
+      <p class="ck-cat-desc">Permettent de vous proposer des contenus personnalisés et de mesurer l'efficacité de nos communications sur des plateformes tierces.</p>
+    </div>
+
+    <div class="ckp-foot">
+      <button class="ck-btn-refuse" id="ckPanelRefuse"><span>Tout refuser</span></button>
+      <button class="ck-btn-accept" id="ckPanelSave"><span>Enregistrer mes choix</span></button>
+    </div>
+  </div>
+</div>
+<!-- ══ FIN BANNIÈRE COOKIES ══ -->
 
 <nav id="nav">
   <a href="NV.html" class="nav-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
@@ -1143,7 +1511,7 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
 <footer>
   <a href="#" class="footer-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
   <span class="fcopy">© 2026 NOTAVEXIN — Tous droits réservés</span>
-  <div class="flinks"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+  <div class="flinks"><a href="#" id="footerMentions">Mentions légales</a><a href="#" id="footerConfidentialite">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -1368,6 +1736,127 @@ expRows.forEach(function(row){
   track.addEventListener("touchstart", function(){ paused = true;  }, {passive:true});
   track.addEventListener("touchend",   function(){ paused = false; }, {passive:true});
   track.addEventListener("touchcancel",function(){ paused = false; }, {passive:true});
+})();
+
+/* ══════════════════════════════════════
+   MODALE MENTIONS LÉGALES
+══════════════════════════════════════ */
+(function(){
+  var mlOverlay = document.getElementById('ml-overlay');
+  var mlModal   = document.getElementById('ml-modal');
+
+  /* Réutilise les styles pc-overlay pour ml-overlay */
+  mlOverlay.style.cssText = document.getElementById('pc-overlay').style.cssText;
+
+  function openML(e){ if(e) e.preventDefault(); mlOverlay.classList.add('visible'); mlModal.classList.add('visible'); document.body.style.overflow='hidden'; }
+  function closeML(){ mlOverlay.classList.remove('visible'); mlModal.classList.remove('visible'); document.body.style.overflow=''; }
+
+  document.getElementById('mlClose').addEventListener('click', closeML);
+  mlOverlay.addEventListener('click', closeML);
+  document.getElementById('footerMentions').addEventListener('click', openML);
+
+  [document.getElementById('mlClose'), document.getElementById('footerMentions')].forEach(function(el){
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
+  });
+
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeML(); });
+})();
+
+/* ══════════════════════════════════════
+   MODALE POLITIQUE DE CONFIDENTIALITÉ
+══════════════════════════════════════ */
+(function(){
+  var pcOverlay = document.getElementById('pc-overlay');
+  var pcModal   = document.getElementById('pc-modal');
+
+  function openPC(e){ if(e) e.preventDefault(); pcOverlay.classList.add('visible'); pcModal.classList.add('visible'); document.body.style.overflow='hidden'; }
+  function closePC(){ pcOverlay.classList.remove('visible'); pcModal.classList.remove('visible'); document.body.style.overflow=''; }
+
+  document.getElementById('pcClose').addEventListener('click', closePC);
+  pcOverlay.addEventListener('click', closePC);
+  document.getElementById('footerConfidentialite').addEventListener('click', openPC);
+  document.getElementById('ckBannerConfidentialite').addEventListener('click', openPC);
+
+  /* Curseur custom */
+  [document.getElementById('pcClose'), document.getElementById('footerConfidentialite'), document.getElementById('ckBannerConfidentialite')].forEach(function(el){
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
+  });
+
+  /* Fermeture clavier */
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePC(); });
+})();
+
+/* ══════════════════════════════════════
+   GESTION COOKIES
+══════════════════════════════════════ */
+(function(){
+  var STORAGE_KEY = 'nv_cookies_v1';
+  var banner  = document.getElementById('ck-banner');
+  var overlay = document.getElementById('ck-overlay');
+  var panel   = document.getElementById('ck-panel');
+
+  function loadPrefs(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+    catch(e){ return null; }
+  }
+  function savePrefs(prefs){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+  }
+  function hideBanner(){
+    banner.classList.remove('visible');
+  }
+  function openPanel(){
+    var prefs = loadPrefs();
+    document.getElementById('ck-analytics').checked  = prefs ? !!prefs.analytics : false;
+    document.getElementById('ck-marketing').checked  = prefs ? !!prefs.marketing : false;
+    overlay.classList.add('visible');
+    panel.classList.add('visible');
+  }
+  function closePanel(){
+    panel.classList.remove('visible');
+    overlay.classList.remove('visible');
+  }
+
+  /* Afficher la bannière si aucun choix enregistré */
+  if(!loadPrefs()){
+    setTimeout(function(){ banner.classList.add('visible'); }, 900);
+  }
+
+  /* Tout accepter */
+  function acceptAll(){
+    savePrefs({analytics:true, marketing:true});
+    hideBanner(); closePanel();
+  }
+  /* Tout refuser */
+  function refuseAll(){
+    savePrefs({analytics:false, marketing:false});
+    hideBanner(); closePanel();
+  }
+  /* Enregistrer les choix du panneau */
+  function saveChoices(){
+    savePrefs({
+      analytics : document.getElementById('ck-analytics').checked,
+      marketing : document.getElementById('ck-marketing').checked
+    });
+    hideBanner(); closePanel();
+  }
+
+  document.getElementById('ckAccept').addEventListener('click', acceptAll);
+  document.getElementById('ckRefuse').addEventListener('click', refuseAll);
+  document.getElementById('ckPrefs').addEventListener('click', openPanel);
+  document.getElementById('ckPanelClose').addEventListener('click', closePanel);
+  document.getElementById('ckPanelRefuse').addEventListener('click', refuseAll);
+  document.getElementById('ckPanelSave').addEventListener('click', saveChoices);
+  overlay.addEventListener('click', closePanel);
+
+  /* Étendre le curseur custom aux éléments cookies */
+  var ckEls = document.querySelectorAll('#ck-banner button, #ck-panel button, #ck-panel label, #ck-banner a, #ck-panel a');
+  ckEls.forEach(function(el){
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
+  });
 })();
 
 })();
