@@ -697,73 +697,6 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 .carr{color:var(--g);position:relative;z-index:1;opacity:0;transform:translateX(-5px);transition:opacity .35s .08s,transform .35s .08s var(--E);}
 .crow:hover .carr{opacity:1;transform:translateX(0);}
 
-/* ══ MODALE POLITIQUE DE CONFIDENTIALITÉ ══ */
-#pc-overlay{
-  position:fixed;inset:0;z-index:1000;
-  background:rgba(8,7,4,.60);
-  backdrop-filter:blur(8px);
-  opacity:0;pointer-events:none;
-  transition:opacity .5s ease;
-  cursor:none;
-}
-#pc-overlay.visible{opacity:1;pointer-events:all;}
-#pc-modal{
-  position:fixed;top:50%;left:50%;z-index:1010;
-  width:min(720px,92vw);max-height:82vh;
-  background:var(--bg);
-  border:1px solid var(--ln);
-  box-shadow:0 24px 80px rgba(184,134,11,.16);
-  transform:translate(-50%,-48%);
-  opacity:0;pointer-events:none;
-  transition:transform .6s cubic-bezier(.76,0,.24,1),opacity .5s ease;
-  overflow:hidden;display:flex;flex-direction:column;
-  cursor:none;
-}
-#pc-modal.visible{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
-.pc-header{
-  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
-  padding:40px 52px 28px;
-  border-bottom:1px solid var(--ln);
-  flex-shrink:0;
-}
-.pc-header-left .pc-eyebrow{
-  display:inline-flex;align-items:center;gap:10px;margin-bottom:10px;
-}
-.pc-header-left .pc-eyebrow::before,.pc-header-left .pc-eyebrow::after{
-  content:'';width:14px;height:1px;background:var(--g);
-}
-.pc-header-left .pc-eyebrow span{
-  font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--g);
-}
-.pc-title{
-  font-family:'Cormorant Garamond',serif;font-weight:300;
-  font-size:1.7rem;letter-spacing:-.02em;color:var(--tx);line-height:1.1;
-}
-.pc-close{
-  background:none;border:none;cursor:none;
-  color:var(--mu);font-size:1.3rem;line-height:1;
-  padding:4px;transition:color .3s,transform .3s;flex-shrink:0;
-  margin-top:6px;
-}
-.pc-close:hover{color:var(--tx);transform:rotate(90deg);}
-.pc-body{
-  padding:36px 52px 44px;
-  overflow-y:auto;
-  font-size:.72rem;line-height:1.95;color:var(--mu);
-}
-.pc-body p{margin-bottom:1.2em;}
-.pc-body strong{color:var(--tx);font-weight:400;letter-spacing:.04em;}
-.pc-body address{font-style:normal;margin:1.2em 0;padding:18px 24px;border-left:2px solid var(--g);background:var(--bg2);}
-.pc-body a{color:var(--g);text-decoration:none;border-bottom:1px solid rgba(184,134,11,.3);cursor:none;transition:border-color .3s;}
-.pc-body a:hover{border-color:var(--g);}
-@media(max-width:600px){
-  .pc-header,.pc-body{padding-left:22px;padding-right:22px;}
-}
-#ml-overlay{position:fixed;inset:0;z-index:1000;background:rgba(8,7,4,.60);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .5s ease;cursor:none;}
-#ml-overlay.visible{opacity:1;pointer-events:all;}
-#ml-modal{position:fixed;top:50%;left:50%;z-index:1010;width:min(720px,92vw);max-height:82vh;background:var(--bg);border:1px solid var(--ln);box-shadow:0 24px 80px rgba(184,134,11,.16);transform:translate(-50%,-48%);opacity:0;pointer-events:none;transition:transform .6s cubic-bezier(.76,0,.24,1),opacity .5s ease;overflow:hidden;display:flex;flex-direction:column;cursor:none;}
-#ml-modal.visible{transform:translate(-50%,-50%);opacity:1;pointer-events:all;}
-
 /* FOOTER */
 footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);display:flex;align-items:center;justify-content:space-between;}
 .footer-logo img{height:50px;width:auto;}
@@ -927,81 +860,6 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
 <div id="dot"></div>
 <div id="ring"></div>
 
-<!-- ══ MODALE POLITIQUE DE CONFIDENTIALITÉ ══ -->
-<div id="pc-overlay" role="presentation"></div>
-<div id="pc-modal" role="dialog" aria-modal="true" aria-label="Politique de confidentialité">
-  <div class="pc-header">
-    <div class="pc-header-left">
-      <div class="pc-eyebrow"><span>RGPD</span></div>
-      <h2 class="pc-title">Politique de<br><em style="font-style:italic;color:var(--g);">confidentialité</em></h2>
-    </div>
-    <button class="pc-close" id="pcClose" aria-label="Fermer">&#x2715;</button>
-  </div>
-  <div class="pc-body">
-    <p>Nous nous engageons à respecter la vie privée de chaque personne dont nous sommes amenés à traiter les données à caractère personnel (dénommées ci-après <strong>«&nbsp;Données personnelles&nbsp;»</strong>).</p>
-    <p>Nous traitons notamment les Données personnelles de nos clients, des personnes qui visitent notre site web et plus globalement de toute personne avec laquelle nous entrons en contact dans le cadre de notre activité de Notaire.</p>
-    <p>Toutes vos Données personnelles sont hébergées sur nos <strong>serveurs internes en France</strong>.</p>
-    <p>Nous veillons à assurer la sécurité de vos Données personnelles, en mettant en œuvre des mesures techniques, juridiques et organisationnelles renforcées.</p>
-    <p>Conformément à la loi n°78-17 du 6 janvier 1978 modifiée relative à l'informatique, aux fichiers et aux libertés, et au règlement européen 2016/679, dit <strong>Règlement Général sur la Protection des Données (RGPD)</strong>, vous disposez d'un droit d'accès, de rectification, de suppression des informations qui vous concernent.</p>
-    <p>Vous pouvez exercer vos droits en vous adressant à :</p>
-    <address>
-      <strong>NOTAVEXIN NOTAIRES</strong><br>
-      8, rue de la République<br>
-      60240 CHAUMONT EN VEXIN
-    </address>
-    <p>Vous avez également le droit de déposer une plainte auprès de la <strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong>, dont le site Internet peut être consulté à l'adresse suivante : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>.</p>
-    <p>Dans le cadre du fonctionnement de notre Site, nous pouvons déposer des cookies sur les appareils des visiteurs. Ce dépôt de cookies a différents buts, que vous pouvez retrouver au sein de notre <strong>Politique de cookies</strong>. Ce traitement est alors fondé sur votre consentement ou, pour les cookies exclusivement techniques, sur notre intérêt légitime.</p>
-    <p>Pour toute information relative aux cookies utilisés par notre site Internet, nous vous invitons à cliquer sur le lien <strong>«&nbsp;Politique de Cookies&nbsp;»</strong>, en bas de page du site.</p>
-  </div>
-</div>
-<!-- ══ FIN MODALE POLITIQUE DE CONFIDENTIALITÉ ══ -->
-
-<!-- ══ MODALE MENTIONS LÉGALES ══ -->
-<div id="ml-overlay" role="presentation"></div>
-<div id="ml-modal" role="dialog" aria-modal="true" aria-label="Mentions légales">
-  <div class="pc-header">
-    <div class="pc-header-left">
-      <div class="pc-eyebrow"><span>Informations légales</span></div>
-      <h2 class="pc-title">Mentions<br><em style="font-style:italic;color:var(--g);">légales</em></h2>
-    </div>
-    <button class="pc-close" id="mlClose" aria-label="Fermer">&#x2715;</button>
-  </div>
-  <div class="pc-body">
-
-    <p><strong>Éditeur du site</strong></p>
-    <address>
-      <strong>NOTAVEXIN NOTAIRES</strong><br>
-      8, rue de la République<br>
-      60240 CHAUMONT EN VEXIN<br><br>
-      Tél : <a href="tel:0344490002">03 44 49 00 02</a><br>
-      Fax : 03 44 49 01 27
-    </address>
-
-    <p><strong>Identification</strong></p>
-    <address>
-      N° SIRET : 52390909100010
-    </address>
-
-    <p><strong>Directeur de la publication</strong></p>
-    <address>
-      Floriane ANGERAS-LACAILLE
-    </address>
-
-    <p><strong>Hébergement</strong></p>
-    <address>
-      Société APOSTILL<br>
-      48 Rue Saint Jean — 95300 Pontoise<br>
-      <a href="https://apostill.fr/" target="_blank" rel="noopener">apostill.fr</a>
-    </address>
-
-    <p><strong>Médiateur du notariat</strong></p>
-    <p>En cas de litige non résolu avec un Notaire, vous avez la possibilité de saisir le Médiateur du notariat à l'adresse suivante : <a href="https://mediateur-notariat.notaires.fr" target="_blank" rel="noopener">mediateur-notariat.notaires.fr</a> afin de tenter, avec son aide, de trouver une résolution amiable de conflit.</p>
-    <p style="font-size:.62rem;color:rgba(39,37,34,.45);font-style:italic;">Article L 616-1 et R 616-1 du Code de la Consommation</p>
-
-  </div>
-</div>
-<!-- ══ FIN MODALE MENTIONS LÉGALES ══ -->
-
 <!-- ══ BANNIÈRE COOKIES ══ -->
 <div id="ck-overlay" role="presentation"></div>
 
@@ -1012,7 +870,7 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
       <p class="ck-desc">
         Nous utilisons des cookies pour améliorer votre expérience de navigation, mesurer l'audience de notre site et vous proposer des contenus adaptés.
         Vous pouvez accepter tous les cookies, les refuser ou personnaliser vos préférences.
-        <a href="#" id="ckBannerConfidentialite">Politique de confidentialité</a>
+        <a href="confidentialite.html">Politique de confidentialité</a>
       </p>
     </div>
     <div class="ck-actions">
@@ -1511,7 +1369,7 @@ footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);dis
 <footer>
   <a href="#" class="footer-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
   <span class="fcopy">© 2026 NOTAVEXIN — Tous droits réservés</span>
-  <div class="flinks"><a href="#" id="footerMentions">Mentions légales</a><a href="#" id="footerConfidentialite">Confidentialité</a></div>
+  <div class="flinks"><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></div>
 </footer>
 
 <script>
@@ -1736,56 +1594,6 @@ expRows.forEach(function(row){
   track.addEventListener("touchstart", function(){ paused = true;  }, {passive:true});
   track.addEventListener("touchend",   function(){ paused = false; }, {passive:true});
   track.addEventListener("touchcancel",function(){ paused = false; }, {passive:true});
-})();
-
-/* ══════════════════════════════════════
-   MODALE MENTIONS LÉGALES
-══════════════════════════════════════ */
-(function(){
-  var mlOverlay = document.getElementById('ml-overlay');
-  var mlModal   = document.getElementById('ml-modal');
-
-  /* Réutilise les styles pc-overlay pour ml-overlay */
-  mlOverlay.style.cssText = document.getElementById('pc-overlay').style.cssText;
-
-  function openML(e){ if(e) e.preventDefault(); mlOverlay.classList.add('visible'); mlModal.classList.add('visible'); document.body.style.overflow='hidden'; }
-  function closeML(){ mlOverlay.classList.remove('visible'); mlModal.classList.remove('visible'); document.body.style.overflow=''; }
-
-  document.getElementById('mlClose').addEventListener('click', closeML);
-  mlOverlay.addEventListener('click', closeML);
-  document.getElementById('footerMentions').addEventListener('click', openML);
-
-  [document.getElementById('mlClose'), document.getElementById('footerMentions')].forEach(function(el){
-    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
-    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
-  });
-
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeML(); });
-})();
-
-/* ══════════════════════════════════════
-   MODALE POLITIQUE DE CONFIDENTIALITÉ
-══════════════════════════════════════ */
-(function(){
-  var pcOverlay = document.getElementById('pc-overlay');
-  var pcModal   = document.getElementById('pc-modal');
-
-  function openPC(e){ if(e) e.preventDefault(); pcOverlay.classList.add('visible'); pcModal.classList.add('visible'); document.body.style.overflow='hidden'; }
-  function closePC(){ pcOverlay.classList.remove('visible'); pcModal.classList.remove('visible'); document.body.style.overflow=''; }
-
-  document.getElementById('pcClose').addEventListener('click', closePC);
-  pcOverlay.addEventListener('click', closePC);
-  document.getElementById('footerConfidentialite').addEventListener('click', openPC);
-  document.getElementById('ckBannerConfidentialite').addEventListener('click', openPC);
-
-  /* Curseur custom */
-  [document.getElementById('pcClose'), document.getElementById('footerConfidentialite'), document.getElementById('ckBannerConfidentialite')].forEach(function(el){
-    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
-    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
-  });
-
-  /* Fermeture clavier */
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closePC(); });
 })();
 
 /* ══════════════════════════════════════
