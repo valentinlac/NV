@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOTAVEXIN — Étude Notariale</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg : #faf8f4;
+  --bg1: #faf8f4;
+  --bg2: #fef8e6;
+  --g  : #e0a406;
+  --gl : #e6ae14;
+  --gd : #cf950c;
+  --tx : #000000;
+  --tx2: #413c38;
+  --mu : rgba(39, 37, 34, 0.741);
+  --ln : rgba(184, 135, 11, 0.303);
+  --E  : cubic-bezier(.76,0,.24,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+/* ══════════════════════════════════════
+   BANNIÈRE COOKIES
+══════════════════════════════════════ */
+#ck-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:800;
+  background:rgba(250,248,244,.97);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--ln);
+  box-shadow:0 -4px 40px rgba(184,134,11,.10);
+  transform:translateY(102%);
+  transition:transform .72s cubic-bezier(.76,0,.24,1);
+  cursor:none;
+}
+#ck-banner.visible{transform:translateY(0);}
+.ck-inner{
+  max-width:1200px;margin:0 auto;
+  padding:28px 72px;
+  display:flex;align-items:center;gap:40px;flex-wrap:wrap;
+}
+.ck-text{flex:1;min-width:220px;}
+.ck-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.15rem;letter-spacing:-.01em;color:var(--tx);
+  margin-bottom:7px;
+}
+.ck-desc{
+  font-size:.68rem;line-height:1.85;color:var(--mu);
+  max-width:540px;
+}
+.ck-desc a{color:var(--g);text-decoration:none;border-bottom:1px solid rgba(184,134,11,.3);cursor:none;transition:border-color .3s;}
+.ck-desc a:hover{border-color:var(--g);}
+.ck-actions{display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;}
+.ck-btn-accept{
+  display:inline-block;position:relative;overflow:hidden;
+  padding:11px 28px;background:var(--g);border:none;
+  color:#fff;font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
+  cursor:none;transition:box-shadow .4s;
+  box-shadow:0 4px 20px rgba(184,134,11,.28);
+}
+.ck-btn-accept::before{
+  content:'';position:absolute;inset:0;background:var(--gd);
+  transform:translateY(101%);transition:transform .45s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-accept:hover{box-shadow:0 6px 30px rgba(184,134,11,.42);}
+.ck-btn-accept:hover::before{transform:translateY(0);}
+.ck-btn-accept span{position:relative;z-index:1;}
+.ck-btn-refuse{
+  display:inline-block;position:relative;overflow:hidden;
+  padding:11px 28px;background:transparent;
+  border:1.5px solid var(--g);
+  color:var(--g);font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;
+  cursor:none;transition:color .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-refuse::before{
+  content:'';position:absolute;inset:0;background:var(--g);
+  transform:translateY(101%);transition:transform .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-btn-refuse:hover{color:#fff;}
+.ck-btn-refuse:hover::before{transform:translateY(0);}
+.ck-btn-refuse span{position:relative;z-index:1;}
+.ck-btn-prefs{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:.53rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--mu);cursor:none;background:none;border:none;
+  border-bottom:1px solid rgba(39,37,34,.2);padding-bottom:2px;
+  transition:color .3s,border-color .3s;
+}
+.ck-btn-prefs:hover{color:var(--tx);border-color:var(--tx);}
+
+/* ── PANNEAU PRÉFÉRENCES ── */
+#ck-overlay{
+  position:fixed;inset:0;z-index:850;
+  background:rgba(8,7,4,.55);
+  backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;
+  transition:opacity .5s ease;
+  cursor:none;
+}
+#ck-overlay.visible{opacity:1;pointer-events:all;}
+#ck-panel{
+  position:fixed;bottom:0;left:0;right:0;z-index:900;
+  background:var(--bg);
+  border-top:1px solid var(--ln);
+  box-shadow:0 -8px 60px rgba(184,134,11,.14);
+  transform:translateY(102%);
+  transition:transform .68s cubic-bezier(.76,0,.24,1);
+  cursor:none;
+  max-height:90vh;overflow-y:auto;
+}
+#ck-panel.visible{transform:translateY(0);}
+.ckp-inner{max-width:760px;margin:0 auto;padding:52px 72px 44px;}
+.ckp-head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:20px;margin-bottom:40px;
+}
+.ckp-head-text .ck-title{font-size:1.5rem;margin-bottom:10px;}
+.ckp-close{
+  background:none;border:none;cursor:none;
+  color:var(--mu);font-size:1.4rem;line-height:1;
+  padding:4px;transition:color .3s,transform .3s;flex-shrink:0;margin-top:2px;
+}
+.ckp-close:hover{color:var(--tx);transform:rotate(90deg);}
+.ck-cat{
+  border-top:1px solid var(--ln);padding:26px 0;
+}
+.ck-cat:last-of-type{border-bottom:1px solid var(--ln);}
+.ck-cat-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px;}
+.ck-cat-name{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:1.05rem;letter-spacing:-.01em;color:var(--tx);
+}
+.ck-cat-desc{font-size:.65rem;line-height:1.85;color:var(--mu);}
+/* Toggle */
+.ck-toggle{
+  position:relative;width:42px;height:24px;flex-shrink:0;cursor:none;
+}
+.ck-toggle input{opacity:0;width:0;height:0;position:absolute;}
+.ck-toggle-track{
+  position:absolute;inset:0;border-radius:12px;
+  background:rgba(184,134,11,.18);border:1.5px solid var(--ln);
+  transition:background .4s,border-color .4s;
+}
+.ck-toggle input:checked~.ck-toggle-track{
+  background:var(--g);border-color:var(--g);
+}
+.ck-toggle-thumb{
+  position:absolute;top:3px;left:3px;
+  width:16px;height:16px;border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+  transition:transform .4s cubic-bezier(.76,0,.24,1);
+}
+.ck-toggle input:checked~.ck-toggle-thumb{transform:translateX(18px);}
+.ck-toggle-locked{
+  width:42px;height:24px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.ck-lock-icon{
+  font-size:.78rem;color:var(--g);opacity:.7;
+}
+.ckp-foot{
+  display:flex;align-items:center;justify-content:flex-end;
+  gap:14px;margin-top:36px;flex-wrap:wrap;
+}
+/* Responsive bannière */
+@media(max-width:760px){
+  .ck-inner{padding:22px 20px;gap:20px;}
+  .ck-actions{width:100%;justify-content:flex-end;}
+  .ckp-inner{padding:36px 20px 32px;}
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+#dot,#ring{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;top:0;left:0;}
+#dot{width:7px;height:7px;background:var(--gl);margin-left:-3.5px;margin-top:-3.5px;transition:transform .18s var(--E);}
+#ring{width:34px;height:34px;border:1.5px solid rgba(184,134,11,.35);margin-left:-17px;margin-top:-17px;transition:width .42s var(--E),height .42s var(--E),margin .42s var(--E),border-color .3s;}
+body.hov #dot{transform:scale(.45);}
+body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-color:var(--g);}
+
+/* NAV */
+#nav{position:fixed;inset:0 0 auto;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:0px 72px;background:transparent;border-bottom:1px solid transparent;transition:padding .5s var(--E),background .4s,border-color .4s,box-shadow .4s;}
+#nav.on{padding:13px 72px;background:rgba(250,248,244,.96);backdrop-filter:blur(16px);border-color:var(--ln);box-shadow:0 2px 32px rgba(184,134,11,.07);}
+#nav.on .nav-ul a{color:var(--mu);}
+#nav.on .nav-ul a:hover{color:var(--tx);}
+#nav.on .nav-burger span{background:var(--tx);}
+.nav-ul{display:flex;align-items:center;gap:22px;list-style:none;}
+.nav-ul a{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,240,232,.75);text-decoration:none;cursor:none;position:relative;transition:color .3s;white-space:nowrap;}
+.nav-ul a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:1px;background:var(--g);transition:width .45s var(--E);}
+.nav-ul a:hover{color:#f4f0e8;}
+.nav-ul a:hover::after{width:100%;}
+.ndot{width:3px;height:3px;border-radius:50%;background:rgba(184,134,11,.3);flex-shrink:0;}
+.nrdv{display:inline-block;position:relative;overflow:hidden;padding:8px 18px;border:1.5px solid var(--g);color:var(--g);text-decoration:none;cursor:none;font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;transition:color .4s var(--E);white-space:nowrap;}
+.nrdv::before{content:'';position:absolute;inset:0;background:var(--g);transform:translateY(101%);transition:transform .4s var(--E);}
+.nrdv:hover{color:#fff;}
+.nrdv:hover::before{transform:translateY(0);}
+.nrdv span{position:relative;z-index:1;}
+.nav-logo img{height:80px;width:auto;}
+
+/* BOUTONS */
+.bp{display:inline-block;position:relative;overflow:hidden;padding:13px 34px;background:var(--g);border:none;color:#fff;text-decoration:none;cursor:none;font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;transition:box-shadow .4s;white-space:nowrap;box-shadow:0 4px 24px rgba(184,134,11,.28);}
+.bp::before{content:'';position:absolute;inset:0;background:var(--gd);transform:translateY(101%);transition:transform .5s var(--E);}
+.bp:hover{box-shadow:0 6px 36px rgba(184,134,11,.42);}
+.bp:hover::before{transform:translateY(0);}
+.bp span{position:relative;z-index:1;}
+.bg-btn{display:inline-flex;align-items:center;gap:10px;color:rgba(244,240,232,.6);text-decoration:none;cursor:none;font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;transition:color .3s,gap .4s var(--E);}
+.bg-btn:hover{color:#f4f0e8;gap:18px;}
+.b-inline{display:inline-flex;align-items:center;gap:12px;color:var(--g);text-decoration:none;cursor:none;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;border-bottom:1.5px solid rgba(184,134,11,.3);padding-bottom:4px;transition:gap .4s var(--E),border-color .3s,color .3s;}
+.b-inline:hover{gap:22px;border-color:var(--g);color:var(--gd);}
+.b-inline .arr{font-size:1.1rem;line-height:1;transition:transform .4s var(--E);}
+.b-inline:hover .arr{transform:translateX(5px);}
+.b-inline-w{display:inline-flex;align-items:center;gap:12px;color:rgba(255,255,255,.75);text-decoration:none;cursor:none;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:4px;transition:gap .4s var(--E),border-color .3s,color .3s;}
+.b-inline-w:hover{gap:22px;border-color:rgba(212,160,18,.8);color:var(--gl);}
+.b-inline-w .arr{font-size:1.1rem;line-height:1;transition:transform .4s var(--E);}
+.b-inline-w:hover .arr{transform:translateX(5px);}
+
+/* UTILITAIRES */
+.eyebrow{display:inline-flex;align-items:center;gap:11px;margin-bottom:14px;}
+.eyebrow.c::before,.eyebrow.c::after{content:'';width:18px;height:1px;background:var(--g);}
+.eyebrow span{font-size:.53rem;letter-spacing:.3em;text-transform:uppercase;color:var(--g);}
+.stitle{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.08;font-size:clamp(2.8rem,4.8vw,4.8rem);color:var(--tx);letter-spacing: -0.04em;}
+.stitle em{font-style:italic;color:var(--g);}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .85s ease,transform .85s ease;}
+.rv.on{opacity:1;transform:none;}
+.rv.d1{transition-delay:.12s;}.rv.d2{transition-delay:.25s;}.rv.d3{transition-delay:.38s;}
+
+/* ══ HERO — fond photo sombre ══ */
+#hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:130px 80px 130px;position:relative;overflow:hidden;background:#0c0a07;}
+.hero-bg{position:absolute;inset:0;background-image:url(VJ.png);background-size:cover;background-position:center 0%;transform:scale(1.06); filter:brightness(92%);transition:transform 14s ease;z-index:0;}
+#hero:hover .hero-bg{transform:scale(1.0);}
+#hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(8,7,4,.6) 0%,rgba(8,7,4,.18) 42%,rgba(8,7,4,.68) 100%);}
+#particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;}
+.seal{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:sealP 8s ease-in-out infinite;}
+.seal:nth-child(3){width:720px;height:720px;border:1px solid #e0a206a7;animation-delay:0s;}
+.seal:nth-child(4){width:550px;height:550px;border:1.5px solid #e0a206b9;animation-delay:-2s;}
+.seal:nth-child(5){width:378px;height:378px;border:1px solid #e0a206d9;animation-delay:-4s;}
+.seal:nth-child(6){width:210px;height:210px;border:1.8px solid #e0a406;animation-delay:-6s;}
+@keyframes sealP{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.035);}}
+.txt-ring{position:absolute;width:580px;height:580px;top:50%;left:50%;pointer-events:none;z-index:2;animation:ringR 90s linear infinite;}
+@keyframes ringR{to{transform:translate(-50%,-50%) rotate(360deg);}}
+.txt-ring text{font-family:'DM Sans',sans-serif;font-size:9.5px;letter-spacing:8px;fill:#e0a20697;}
+.hbody{position:relative;z-index:3;max-width:760px;}
+.h-eye{display:inline-flex;align-items:center;gap:14px;margin-bottom:44px;opacity:0;animation:hFd .9s .3s ease forwards;}
+.h-eye-bar{width:28px;height:1px;background:var(--g);}
+.h-eye span{font-size:.56rem;letter-spacing:.32em;text-transform:uppercase;color:var(--g);}
+.h-title{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1;color:#f4f0e8;}
+.h-title .r1{display:block;overflow:hidden;font-size:clamp(1.8rem,8.2vw,12rem);letter-spacing:0;}
+.h-title .r2{display:block;overflow:hidden;font-size:clamp(1rem,2.3vw,2.1rem);letter-spacing:.1em;color:rgba(244, 240, 232, 0.89);margin-top:10px;}
+.h-title .r1 span,.h-title .r2 span{display:block;transform:translateY(110%);animation:hSl .9s var(--E) forwards;}
+.h-title .r1 span{animation-delay:.46s;}
+.h-title .r2 span{animation-delay:.68s;}
+.h-rule{width:38px;height:1px;background:var(--g);margin:28px auto;opacity:0;animation:hFd .8s .92s ease forwards;}
+.h-sub{font-size:.78rem;line-height:1.95;letter-spacing:.04em;color:rgba(244,240,232,.62);max-width:460px;margin:0 auto 44px;opacity:0;animation:hFd .9s 1.06s ease forwards;}
+.h-cta{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;opacity:0;animation:hFd .9s 1.26s ease forwards;}
+.h-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:hFd .8s 2s ease forwards;pointer-events:none;z-index:3;}
+.h-scroll span{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,240,232,.38);white-space:nowrap;}
+.h-scroll-bar{width:1px;height:46px;background:linear-gradient(180deg,var(--g),transparent);animation:scrA 2.5s 2.5s ease-in-out infinite;}
+@keyframes scrA{0%{transform:scaleY(0);transform-origin:top;opacity:1;}49%{transform:scaleY(1);transform-origin:top;}50%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;opacity:0;}}
+@keyframes hFd{to{opacity:1;}}
+@keyframes hSl{to{transform:translateY(0);}}
+
+/* STATS */
+#stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg1);border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);}
+.sc{padding:52px 0;border-right:1px solid var(--ln);text-align:center;position:relative;overflow:hidden;cursor:none;transition:background .5s;}
+.sc:last-child{border-right:none;}
+.sc:hover{background:var(--bg2);}
+.snum{display:block;font-family:'Cormorant Garamond',serif;font-size:2.9rem;font-weight:300;color:var(--g);line-height:1;margin-bottom:8px;}
+.slbl{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dk);}
+
+/* NOTRE ÉTUDE */
+#etude{position:relative;min-height:85vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;}
+.etude-bg{position:absolute;inset:0;background-image:url(PC.jpg);background-size:cover;background-position:center;will-change:transform;transform:scale(1.08);}
+.etude-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,7,4,.80) 0%,rgba(8,7,4,.55) 45%,rgba(8,7,4,.78) 100%);}
+.etude-line-l{position:absolute;left:0;top:50%;width:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,160,18,.55));transition:width 1.4s var(--E);}
+.etude-line-r{position:absolute;right:0;top:50%;width:0;height:1px;background:linear-gradient(270deg,transparent,rgba(212,160,18,.55));transition:width 1.4s var(--E);}
+#etude.in-view .etude-line-l,#etude.in-view .etude-line-r{width:26%;}
+.etude-body{position:relative;z-index:2;max-width:680px;padding:0 40px;}
+.etude-tag{display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;opacity:0;transform:translateY(16px);transition:opacity .8s ease,transform .8s ease;}
+#etude.in-view .etude-tag{opacity:1;transform:translateY(0);}
+.etude-tag-bar{width:22px;height:1px;background:var(--gl);}
+.etude-tag span{font-size:.54rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gl);}
+.etude-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,7vw,7.2rem);line-height:.98;letter-spacing:-0.02em;color:#f4f0e8;}
+.etude-title .et-line{display:block;overflow:hidden;}
+.etude-title .et-line span{display:block;transform:translateY(105%);transition:transform .9s var(--E);}
+#etude.in-view .etude-title .et-line:nth-child(1) span{transform:translateY(0);transition-delay:.1s;}
+#etude.in-view .etude-title .et-line:nth-child(2) span{transform:translateY(0);transition-delay:.22s;}
+#etude.in-view .etude-title .et-line:nth-child(3) span{transform:translateY(0);transition-delay:.34s;}
+.etude-rule{width:0;height:1px;background:var(--gl);margin:26px auto;transition:width 1s .5s var(--E);}
+#etude.in-view .etude-rule{width:36px;}
+.etude-desc{font-size:.77rem;line-height:1.95;color:rgba(244,240,232,.55);max-width:440px;margin:0 auto 36px;opacity:0;transform:translateY(14px);transition:opacity .9s .55s ease,transform .9s .55s ease;}
+#etude.in-view .etude-desc{opacity:1;transform:translateY(0);}
+.etude-vals{display:flex;align-items:center;justify-content:center;gap:32px;margin-bottom:40px;opacity:0;transition:opacity .9s .7s ease;}
+#etude.in-view .etude-vals{opacity:1;}
+.etude-val{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.etude-val-n{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:300;color:var(--gl);line-height:1;}
+.etude-val-l{font-size:.49rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,240,232,.42);}
+.etude-sep{width:1px;height:28px;background:rgba(212,160,18,.25);}
+.etude-cta{opacity:0;transform:translateY(10px);transition:opacity .8s .85s ease,transform .8s .85s ease;}
+#etude.in-view .etude-cta{opacity:1;transform:translateY(0);}
+
+/* EXPERTISE */
+#expertise{padding:11px 0 52px;background:var(--bg);}
+.exp-head{text-align:center;padding:0 80px;margin-bottom:68px;}
+.exp-head .stitle{margin:12px 0 16px;}
+.exp-head p{font-size:.73rem;line-height:1.9;color:var(--mu);max-width:480px;margin:0 auto;}
+.exp-row{position:relative;border-bottom:1px solid var(--ln);cursor:none;overflow:hidden;opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease;text-decoration:none;color:inherit;display:block;background:var(--bg);}
+.exp-row:first-child{border-top:1px solid var(--ln);}
+.exp-row.on{opacity:1;transform:none;}
+.exp-row-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,var(--bg2) 0%,var(--bg2) 55%,transparent 100%);opacity:0;transition:opacity .65s var(--E);}
+.exp-row:hover .exp-row-bg{opacity:1;}
+.exp-row-bar{position:absolute;left:0;top:0;bottom:0;width:3px;z-index:5;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,rgba(184,134,11,.4) 15%,var(--g) 50%,rgba(184,134,11,.4) 85%,transparent 100%);transform:scaleY(0);transform-origin:center;transition:transform .65s var(--E);}
+.exp-row:hover .exp-row-bar{transform:scaleY(1);}
+.exp-row-bar::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent 0%,rgba(184,134,11,.18) 20%,rgba(184,134,11,.35) 50%,rgba(184,134,11,.18) 80%,transparent 100%);transform:scaleY(0);transform-origin:center;transition:transform .75s .05s var(--E);}
+.exp-row:hover .exp-row-bar::before{transform:scaleY(1);}
+.exp-row-bar::after{content:'';position:absolute;left:-3px;top:50%;width:9px;height:9px;border-radius:50%;background:var(--g);box-shadow:0 0 8px 2px rgba(184,134,11,.5);transform:translateY(-50%) scale(0);transition:transform .4s .35s var(--E),box-shadow .4s .35s;}
+.exp-row:hover .exp-row-bar::after{transform:translateY(-50%) scale(1);box-shadow:0 0 14px 4px rgba(212,160,18,.45);}
+.exp-ghost{position:absolute;right:42%;top:50%;transform:translateY(-52%);font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(5rem,14vw,14rem);line-height:1;color:rgba(184,134,11,.055);pointer-events:none;user-select:none;z-index:1;transition:color .7s var(--E),transform .7s var(--E),right .7s var(--E);}
+.exp-row:hover .exp-ghost{color:rgba(184,134,11,.12);transform:translateY(-50%) scale(1.04);right:44%;}
+.exp-inner{display:flex;align-items:center;padding:40px 80px;position:relative;z-index:2;transition:padding-top .7s var(--E),padding-bottom .7s var(--E),padding-right .7s var(--E);}
+.exp-row:hover .exp-inner{padding-top:56px;padding-bottom:56px;padding-right:calc(43% + 20px);}
+.exp-num{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(.85rem,1.4vw,1.3rem);color:rgba(184,134,11,.28);width:72px;flex-shrink:0;transition:color .55s var(--E);}
+.exp-row:hover .exp-num{color:var(--g);}
+.exp-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.3rem,3.1vw,4.6rem);line-height:1;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:clip;color:var(--tx);transition: .7s var(--E),font-size .5s var(--E);letter-spacing:-0.04em;}
+.exp-row:hover .exp-title{letter-spacing:-0.01em;font-size:clamp(1.5rem,3.6vw,5.4rem);}
+.exp-meta{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:8px;padding-left:20px;width:170px;flex-shrink:0;transition:opacity .3s var(--E),transform .4s var(--E);}
+.exp-row:hover .exp-meta{opacity:0;transform:translateX(14px);pointer-events:none;}
+.exp-tag{font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mu);text-align:right;opacity:.55;transition:opacity .45s,color .45s;}
+.exp-row:hover .exp-tag{opacity:1;color:var(--g);}
+.exp-arr{font-size:1.55rem;line-height:1;color:var(--g);opacity:.32;transform:translateX(-7px);transition:opacity .5s var(--E),transform .5s var(--E);}
+.exp-row:hover .exp-arr{opacity:1;transform:translateX(0);}
+.exp-img-wrap{position:absolute;top:0;right:0;bottom:0;width:43%;overflow:hidden;z-index:1;pointer-events:none;transform:translateX(100%);transition:transform .75s var(--E);}
+.exp-row:hover .exp-img-wrap{transform:translateX(0);}
+.exp-img-fade{position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0%,rgba(250,248,244,.25) 18%,rgba(250,248,244,.04) 35%,transparent 55%);}
+.exp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:grayscale(15%) brightness(.88);transform:scale(1.08) translateX(4%);transition:transform .95s var(--E),filter .95s ease;}
+.exp-row:hover .exp-img{transform:scale(1.0) translateX(0);filter:grayscale(0%) brightness(.93);}
+.exp-cap{position:absolute;bottom:0;left:0;right:0;z-index:6;padding:16px 20px;background:linear-gradient(to top,rgba(8,7,4,.80),transparent);}
+.exp-cap-tag{font-size:.49rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gl);margin-bottom:3px;opacity:0;transform:translateY(6px);transition:opacity .45s .42s ease,transform .45s .42s var(--E);}
+.exp-cap-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:#f4f0e8;opacity:0;transform:translateY(8px);transition:opacity .45s .52s ease,transform .5s .52s var(--E);}
+.exp-row.img-active .exp-cap-tag,.exp-row.img-active .exp-cap-name{opacity:1;transform:translateY(0);}
+.exp-foot{padding:40px 80px 0;text-align:center;}
+
+/* ═══════════════════════════════════════════
+   SECTION AVIS
+═══════════════════════════════════════════ */
+#avis{
+  position:relative;
+  padding:120px 0 100px;
+  background:var(--bg);
+  overflow:hidden;
+}
+
+/* Fond décoratif */
+#avis::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 50%, rgba(212,160,18,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 85% 50%, rgba(184,134,11,.05) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+/* Grande lettre fantôme */
+.avis-ghost{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-52%);
+  font-family:'Cormorant Garamond',serif;
+  font-weight:300;
+  font-size:clamp(28rem,40vw,52rem);
+  line-height:1;
+  color:rgba(184,134,11,.04);
+  pointer-events:none;
+  user-select:none;
+  letter-spacing:-.04em;
+  transition:color 1.2s ease;
+  z-index:0;
+}
+#avis.in-view .avis-ghost{color:rgba(184,134,11,.08);}
+
+/* En-tête */
+.avis-head{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  padding:0 80px;
+  margin-bottom:72px;
+}
+.avis-head .eyebrow{margin-bottom:18px;}
+.avis-head .stitle{margin-bottom:14px;color: var(--tx);}
+.avis-head-sub{
+  font-size:.73rem;
+  line-height:1.9;
+  color:var(--mu);
+  max-width:400px;
+  margin:0 auto;
+}
+
+/* Score global */
+.avis-score{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  margin:28px 0 0;
+  opacity:0;
+  transform:translateY(12px);
+  transition:opacity .8s .3s ease, transform .8s .3s ease;
+}
+#avis.in-view .avis-score{opacity:1;transform:none;}
+.avis-score-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.6rem;
+  font-weight:300;
+  color:var(--g);
+  line-height:1;
+}
+.avis-score-right{display:flex;flex-direction:column;gap:5px;}
+.avis-stars-row{display:flex;gap:3px;}
+.avis-star{
+  width:14px;height:14px;
+  position:relative;
+  overflow:hidden;
+}
+.avis-star svg{width:14px;height:14px;fill:rgba(184,134,11,.2);}
+.avis-star .fill{
+  position:absolute;inset:0;
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path .6s var(--E);
+}
+.avis-star .fill svg{fill:var(--g);}
+#avis.in-view .avis-star .fill{clip-path:inset(0 0% 0 0);}
+#avis.in-view .avis-star:nth-child(1) .fill{transition-delay:.1s;}
+#avis.in-view .avis-star:nth-child(2) .fill{transition-delay:.2s;}
+#avis.in-view .avis-star:nth-child(3) .fill{transition-delay:.3s;}
+#avis.in-view .avis-star:nth-child(4) .fill{transition-delay:.4s;}
+#avis.in-view .avis-star:nth-child(5) .fill{transition-delay:.5s;}
+.avis-score-lbl{font-size:.48rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dk);}
+.avis-score-sep{width:1px;height:44px;background:var(--bg2);}
+
+/* Carousel container */
+.avis-track-outer{
+  position:relative;
+  z-index:2;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.avis-track-outer::-webkit-scrollbar{display:none;}
+.avis-track{
+  display:flex;
+  gap:24px;
+  padding:8px 80px 24px;
+  cursor:grab;
+  user-select:none;
+}
+.avis-track.dragging{
+  cursor:grabbing;
+}
+
+/* Carte avis */
+.avis-card{
+  flex-shrink:0;
+  width:340px;
+  background:var(--bg1);
+  border:1px solid rgba(184,134,11,.22);
+  padding:36px 32px 30px;
+  position:relative;
+  overflow:hidden;
+  cursor:none;
+  transition:border-color .5s var(--E), box-shadow .5s var(--E), transform .5s var(--E);
+  opacity:0;
+  transform:translateY(28px);
+}
+.avis-card.on{opacity:1;transform:translateY(0);}
+.avis-card:hover{
+  border-color:rgba(184,134,11,.55);
+  box-shadow:0 8px 48px rgba(184,134,11,.16);
+  transform:translateY(-4px);
+}
+
+/* Coin doré */
+.avis-card::before{
+  content:'';
+  position:absolute;
+  top:0;right:0;
+  width:0;height:0;
+  border-style:solid;
+  border-width:0 28px 28px 0;
+  border-color:transparent rgba(184,134,11,.28) transparent transparent;
+  transition:border-color .4s ease;
+}
+.avis-card:hover::before{border-color:transparent var(--g) transparent transparent;}
+
+/* Barre de fond au survol */
+.avis-card::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--g),transparent);
+  transform:scaleX(0);
+  transform-origin:center;
+  transition:transform .6s var(--E);
+}
+.avis-card:hover::after{transform:scaleX(1);}
+
+/* Guillemets décoratifs */
+.avis-card-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:5.5rem;
+  font-weight:300;
+  line-height:.7;
+  color:rgba(184,134,11,.18);
+  margin-bottom:10px;
+  transition:color .4s ease;
+}
+.avis-card:hover .avis-card-quote{color:rgba(184,134,11,.35);}
+
+/* Étoiles carte */
+.avis-card-stars{display:flex;gap:3px;margin-bottom:16px;}
+.avis-card-stars span{
+  font-size:11px;
+  color:rgba(184,134,11,.3);
+  transition:color .3s;
+}
+.avis-card-stars span.on{color:var(--g);}
+
+/* Texte avis */
+.avis-card-text{
+  font-size:.71rem;
+  line-height:1.9;
+  color:var(--mu);
+  margin-bottom:24px;
+  font-style:italic;
+  position:relative;
+  z-index:1;
+}
+
+/* Séparateur */
+.avis-card-sep{
+  width:20px;height:1px;
+  background:rgba(184,134,11,.38);
+  margin-bottom:16px;
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .5s .15s var(--E);
+}
+.avis-card.on .avis-card-sep{transform:scaleX(1);}
+
+/* Auteur */
+.avis-card-author{display:flex;align-items:center;gap:12px;}
+.avis-card-monogram{
+  width:34px;height:34px;
+  border-radius:50%;
+  border:1px solid rgba(184,134,11,.35);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.85rem;
+  font-weight:300;
+  color:var(--g);
+  transition:border-color .4s, background .4s;
+}
+.avis-card:hover .avis-card-monogram{
+  border-color:var(--g);
+  background:rgba(224,164,6,.08);
+}
+.avis-card-info{display:flex;flex-direction:column;gap:2px;}
+.avis-card-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.92rem;
+  font-weight:300;
+  color:var(--gd);
+  line-height:1.2;
+}
+
+/* Source badge */
+.avis-card-source{
+  position:absolute;
+  top:14px;right:38px;
+  font-size:.42rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:rgba(184,134,11,.5);
+}
+
+/* Contrôles navigation */
+.avis-controls{display:none;}
+.avis-dots{display:none !important;}
+.avis-progress{display:none !important;}
+
+/* Boutons flèches */
+.avis-btn{
+  width:44px;height:44px;
+  border:1px solid rgba(184,134,11,.4);
+  background:rgba(255,255,255,.03);
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;
+  transition:border-color .4s var(--E), background .4s var(--E), transform .4s var(--E);
+  flex-shrink:0;
+}
+.avis-btn:hover{
+  border-color:var(--g);
+  background:rgba(224,164,6,.1);
+  transform:scale(1.08);
+}
+.avis-btn svg{width:16px;height:16px;stroke:var(--g);stroke-width:1.5;fill:none;transition:transform .4s var(--E);}
+.avis-btn:hover svg{transform:translateX(2px);}
+.avis-btn.prev:hover svg{transform:translateX(-2px);}
+
+/* Dots pagination */
+.avis-dots{display:flex;gap:8px;align-items:center;}
+.avis-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:rgba(184,134,11,.28);
+  cursor:none;
+  transition:background .4s var(--E), transform .4s var(--E), width .4s var(--E);
+  border:none;
+}
+.avis-dot.active{
+  background:var(--g);
+  transform:scale(1.3);
+  width:18px;
+  border-radius:3px;
+}
+
+/* Ligne de progression */
+.avis-progress{
+  position:relative;
+  z-index:2;
+  height:1px;
+  background:rgba(184,134,11,.2);
+  margin:20px 80px 0;
+  overflow:hidden;
+}
+.avis-progress-fill{
+  position:absolute;
+  top:0;left:0;bottom:0;
+  background:linear-gradient(90deg, var(--gd), var(--gl));
+  width:0%;
+  transition:width .75s var(--E);
+  box-shadow:0 0 8px 1px rgba(212,160,18,.4);
+}
+
+/* TEAM */
+#team{padding:72px 80px 112px;background:var(--bg1);}
+.thead{text-align:center;margin-bottom:60px;}
+.thead .stitle{margin:10px 0 14px;}
+.thead p{font-size:.73rem;line-height:1.9;color:var(--mu);max-width:380px;margin:0 auto;}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:3px;max-width:980px;margin:0 auto;}
+.card{position:relative;cursor:none;overflow:hidden;}
+.cphoto{position:relative;width:100%;padding-bottom:115%;overflow:hidden;background:#ddd8cf;}
+.cph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.cph svg{opacity:.2;}
+.cimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(100%) brightness(.82);transition:filter .9s var(--E),transform .9s var(--E);}
+.card:hover .cimg{filter:grayscale(0%) brightness(.98);transform:scale(1.04);}
+.cgrad{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(8,7,4,.92) 0%,rgba(8,7,4,.35) 42%,transparent 78%);}
+.clabel{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:0 28px 24px;transition:transform .5s var(--E),opacity .4s ease;}
+.card:hover .clabel{transform:translateY(-108px);opacity:0;}
+.crole{font-size:.51rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);margin-bottom:4px;}
+.cname{font-family:'Cormorant Garamond',serif;font-size:1.1rem;line-height:1.25;color:#f4f0e8;}
+.cbio{position:absolute;bottom:0;left:0;right:0;z-index:4;padding:24px 28px 22px;transform:translateY(100%);transition:transform .5s var(--E);background:linear-gradient(to top,rgba(8,7,4,.96) 62%,transparent 100%);}
+.card:hover .cbio{transform:translateY(0);}
+.cbio-bar{width:16px;height:1px;background:var(--gl);margin-bottom:11px;transform:scaleX(0);transform-origin:left;transition:transform .4s .28s ease;}
+.card:hover .cbio-bar{transform:scaleX(1);}
+.cbio-name{font-family:'Cormorant Garamond',serif;font-size:.98rem;line-height:1.3;margin-bottom:2px;color:#f4f0e8;}
+.cbio-role{font-size:.51rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:9px;}
+.cbio-txt{font-size:.66rem;line-height:1.72;color:rgba(244,240,232,.52);}
+.cpip{position:absolute;top:0;right:0;z-index:5;width:0;height:0;border-style:solid;border-width:0 34px 34px 0;border-color:transparent var(--g) transparent transparent;opacity:0;transition:opacity .4s .2s ease;}
+.card:hover .cpip{opacity:1;}
+.team-cta{max-width:980px;margin:48px auto 0;text-align:center;padding-top:28px;}
+
+/* CONTACT */
+#contact{padding:20px 80px;text-align:center;background:var(--bg);}
+.cbox{max-width:560px;margin:0 auto;}
+.cbox .stitle{margin:10px 0 18px;}
+.cbox>p{font-size:.80rem;line-height:1.9;color:var(--mu);margin-bottom:36px;}
+.ctable{border:1px solid var(--ln);text-align:left;margin-bottom:32px;}
+.crow{display:grid;grid-template-columns:100px 1fr 20px;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid var(--ln);text-decoration:none;color:inherit;cursor:none;position:relative;overflow:hidden;transition:padding-left .5s var(--E);}
+.crow:last-child{border-bottom:none;}
+.crow::before{content:'';position:absolute;inset:0;background:var(--bg2);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--E);}
+.crow:hover::before{transform:scaleX(1);}
+.crow:hover{padding-left:34px;}
+.clbl{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mu);position:relative;z-index:1;}
+.cval{font-family:'Cormorant Garamond',serif;font-size:.98rem;font-weight:300;position:relative;z-index:1;color:var(--tx2);transition:color .35s;}
+.crow:hover .cval{color:var(--g);}
+.carr{color:var(--g);position:relative;z-index:1;opacity:0;transform:translateX(-5px);transition:opacity .35s .08s,transform .35s .08s var(--E);}
+.crow:hover .carr{opacity:1;transform:translateX(0);}
+
+/* FOOTER */
+footer{padding:0px 72px;border-top:1px solid var(--ln);background:var(--bg1);display:flex;align-items:center;justify-content:space-between;}
+.footer-logo img{height:50px;width:auto;}
+.footer-logo:hover img{opacity:1;}
+.fcopy{font-size:.52rem;letter-spacing:.08em;color:rgba(26, 23, 20, 0.723);}
+.flinks{display:flex;gap:18px;}
+.flinks a{font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(26, 23, 20, 0.698);text-decoration:none;cursor:none;transition:color .3s;}
+.flinks a:hover{color:var(--g);}
+.fcredit{font-size:.47rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,23,20,.62);}
+.fcredit a{color:rgba(26,23,20,.62);text-decoration:none;border-bottom:1px solid rgba(26,23,20,.15);cursor:none;transition:color .3s,border-color .3s;}
+.fcredit a:hover{color:var(--g);border-color:rgba(184,134,11,.4);}
+
+/* HAMBURGER */
+.nav-burger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;background:none;border:none;padding:4px;
+  cursor:pointer;flex-shrink:0;z-index:501;
+}
+.nav-burger span{display:block;width:22px;height:1px;background:#f4f0e8;transition:transform .4s var(--E),opacity .3s ease,width .4s var(--E);transform-origin:center;}
+.nav-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;width:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+#nav-mobile{position:fixed;inset:0;z-index:490;background:var(--bg);display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:0 48px 0 0;gap:0;transform:translateX(100%);transition:transform .6s var(--E);pointer-events:none;}
+#nav-mobile.open{transform:none;pointer-events:all;}
+#nav-mobile::after{content:'';position:absolute;right:0;top:10%;bottom:10%;width:2px;background:linear-gradient(180deg,transparent,var(--g) 30%,var(--g) 70%,transparent);}
+
+.nm-link{display:block;font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3.3rem,10vw,5rem);letter-spacing:-.02em;line-height:1;color:var(--g);text-decoration:none;padding:18px 0;text-align:right;position:relative;overflow:hidden;opacity:0;transform:translateX(40px);transition:color .3s, opacity .5s var(--E), transform .5s var(--E);}
+#nav-mobile.open .nm-link:nth-child(1){opacity:1;transform:none;transition-delay:.08s;}
+#nav-mobile.open .nm-link:nth-child(3){opacity:1;transform:none;transition-delay:.16s;}
+#nav-mobile.open .nm-link:nth-child(5){opacity:1;transform:none;transition-delay:.24s;}
+#nav-mobile.open .nm-link:nth-child(7){opacity:1;transform:none;transition-delay:.32s;}
+#nav-mobile.open .nm-link:nth-child(9){opacity:1;transform:none;transition-delay:.40s;}
+#nav-mobile.open .nm-link:nth-child(11){opacity:1;transform:none;transition-delay:.48s;}
+#nav-mobile.open .nm-link:nth-child(11){opacity:1;transform:none;transition-delay:.48s;}
+#nav-mobile.open .nm-link:nth-child(13){opacity:1;transform:none;transition-delay:.56s;}
+
+.nm-link::before{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;font-size:clamp(3.6rem,12vw,5.4rem);color:var(--gd);transform:translateY(105%);transition:transform .4s var(--E);}
+.nm-link:hover{color:transparent;}
+.nm-link:hover::before{transform:translateY(0);}
+
+.nm-rule{width:28px;height:1px;background:var(--ln);margin:0 0 0 auto;opacity:0;transition:opacity .4s ease;}
+#nav-mobile.open .nm-rule{opacity:1;}
+#nav-mobile.open .nm-rule:nth-child(2){transition-delay:.12s;}
+#nav-mobile.open .nm-rule:nth-child(4){transition-delay:.20s;}
+#nav-mobile.open .nm-rule:nth-child(6){transition-delay:.28s;}
+#nav-mobile.open .nm-rule:nth-child(8){transition-delay:.36s;}
+#nav-mobile.open .nm-rule:nth-child(10){transition-delay:.44s;}
+#nav-mobile.open .nm-rule:nth-child(12){transition-delay:.52s;}
+#nav-mobile.open .nm-rule:nth-child(12){transition-delay:.52s;}
+
+.nm-rdv{margin-top:36px;display:inline-block;position:relative;overflow:hidden;padding:15px 38px;border:1.5px solid var(--g);color:var(--g);text-decoration:none;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;opacity:0;transform:translateX(20px);transition:color .4s var(--E), opacity .5s .52s var(--E), transform .5s .52s var(--E);}
+#nav-mobile.open .nm-rdv{opacity:1;transform:none;}
+.nm-rdv::before{content:'';position:absolute;inset:0;background:var(--g);transform:translateY(101%);transition:transform .4s var(--E);}
+.nm-rdv:hover{color:#fff;}
+.nm-rdv:hover::before{transform:translateY(0);}
+.nm-rdv span{position:relative;z-index:1;}
+
+/* RESPONSIVE — TABLETTE */
+@media (max-width:1024px){
+  html,body{overflow-x:hidden;}
+  #nav{padding:0 36px;}
+  #nav.on{padding:12px 36px;}
+  #hero{padding:120px 48px 100px;}
+  #stats{grid-template-columns:repeat(2,1fr);}
+  .sc:nth-child(2){border-right:none;}
+  .sc:nth-child(3){border-top:1px solid var(--ln);}
+  .sc:nth-child(4){border-right:none;border-top:1px solid var(--ln);}
+  #expertise{padding:80px 0 40px;}
+  .exp-head{padding:0 36px;}
+  .exp-inner{padding:32px 36px;}
+  .exp-row:hover .exp-inner{padding-right:calc(43% + 16px);}
+  .exp-foot{padding:32px 36px 0;}
+  #team{padding:60px 36px 80px;}
+  #contact{padding:60px 36px;}
+  footer{padding:20px 36px;}
+  /* Avis tablette */
+  #avis{padding:80px 0 72px;}
+  .avis-head{padding:0 36px;margin-bottom:52px;}
+  .avis-track{padding:8px 36px 24px;}
+  .avis-controls{padding:32px 36px 0;}
+  .avis-progress{margin:16px 36px 0;}
+}
+
+/* RESPONSIVE — MOBILE */
+@media (max-width:768px){
+  html,body{overflow-x:hidden;}
+  body{cursor:auto;}
+  #dot,#ring{display:none;}
+  #nav{padding:0 20px;height:64px;}
+  #nav.on{padding:0 20px;}
+  .nav-logo img{height:52px;}
+  .nav-ul{display:none;}
+  .nav-burger{display:flex;}
+  .nrdv{padding:7px 14px;font-size:.5rem;}
+  #hero{padding:80px 24px 60px;min-height:auto;}
+  .hbody{max-width:100%;}
+  .h-eye{margin-bottom:28px;}
+  .h-eye span{font-size:.48rem;letter-spacing:.2em;}
+  .h-sub{font-size:.72rem;margin-bottom:32px;}
+  .h-cta{flex-direction:column;align-items:center;gap:14px;}
+  .h-title .r1{font-size:min(12vw,9rem);}
+  .h-title .r2{font-size:clamp(.9rem,2.5vw,1.8rem);letter-spacing:.22em;}
+  .seal:nth-child(3){width:340px;height:340px;}
+  .seal:nth-child(4){width:260px;height:260px;}
+  .seal:nth-child(5){width:180px;height:180px;}
+  .seal:nth-child(6){width:100px;height:100px;}
+  .txt-ring{width:300px;height:300px;}
+  #stats{grid-template-columns:repeat(2,1fr);}
+  .sc{padding:36px 0;}
+  .sc:nth-child(2){border-right:none;}
+  .sc:nth-child(3){border-top:1px solid var(--ln);}
+  .sc:nth-child(4){border-right:none;border-top:1px solid var(--ln);}
+  .snum{font-size:2.2rem;}
+  #etude{min-height:70vh;}
+  .etude-body{padding:0 24px;}
+  .etude-vals{gap:18px;}
+  #expertise{padding:60px 0 32px;}
+  .exp-head{padding:0 24px;margin-bottom:40px;}
+  .exp-head .stitle{font-size:clamp(2rem,7vw,3rem);}
+  .exp-inner{padding:24px 24px;}
+  .exp-row:hover .exp-inner{padding-top:24px;padding-bottom:24px;padding-right:24px;}
+  .exp-row:hover .exp-meta{opacity:1;transform:none;}
+  .exp-img-wrap{display:none;}
+  .exp-ghost{display:none;}
+  .exp-row-bar{display:none;}
+  .exp-title{font-size:clamp(1.2rem,5.5vw,2rem);white-space:normal;}
+  .exp-row:hover .exp-title{font-size:clamp(1.2rem,5.5vw,2rem);letter-spacing:0;}
+  .exp-num{width:48px;font-size:.9rem;}
+  .exp-meta{width:auto;}
+  .exp-tag{display:none;}
+  .exp-foot{padding:28px 24px 0;}
+  #team{padding:48px 20px 64px;}
+  .tgrid{grid-template-columns:1fr;gap:3px;max-width:420px;}
+  .thead p{max-width:100%;}
+  #contact{padding:48px 20px;}
+  .crow{grid-template-columns:80px 1fr 20px;gap:8px;padding:16px 16px;}
+  .cval{font-size:.85rem;}
+  footer{flex-direction:column;gap:14px;padding:24px 20px;text-align:center;}
+  .flinks{justify-content:center;}
+  .footer-logo img{height:38px;}
+  /* Avis mobile */
+  #avis{padding:60px 0 56px;}
+  .avis-head{padding:0 24px;margin-bottom:44px;}
+  .avis-ghost{display:none;}
+  .avis-card{width:290px;padding:28px 24px 24px;}
+  .avis-track{padding:8px 24px 24px;gap:16px;cursor:default;}
+  .avis-score{gap:16px;}
+  .avis-score-n{font-size:2.8rem;}
+  .avis-dots{display:none;}
+}
+
+/* RESPONSIVE — PETIT MOBILE */
+@media (max-width:390px){
+  #hero{padding:70px 18px 50px;}
+  .h-sub{font-size:.68rem;}
+  .exp-inner{padding:20px 18px;}
+  .exp-row:hover .exp-inner{padding:20px 18px;}
+  #contact{padding:40px 18px;}
+  footer{padding:20px 18px;}
+}
+</style>
+</head>
+<body>
+
+<div id="dot"></div>
+<div id="ring"></div>
+
+<!-- ══ BANNIÈRE COOKIES ══ -->
+<div id="ck-overlay" role="presentation"></div>
+
+<div id="ck-banner" role="region" aria-label="Gestion des cookies">
+  <div class="ck-inner">
+    <div class="ck-text">
+      <p class="ck-title">Respect de votre vie privée</p>
+      <p class="ck-desc">
+        Nous utilisons des cookies pour améliorer votre expérience de navigation, mesurer l'audience de notre site et vous proposer des contenus adaptés.
+        Vous pouvez accepter tous les cookies, les refuser ou personnaliser vos préférences.
+        <a href="confidentialite.html">Politique de confidentialité</a>
+      </p>
+    </div>
+    <div class="ck-actions">
+      <button class="ck-btn-refuse" id="ckRefuse"><span>Tout refuser</span></button>
+      <button class="ck-btn-accept" id="ckAccept"><span>Tout accepter</span></button>
+      <button class="ck-btn-prefs" id="ckPrefs">Gérer les préférences</button>
+    </div>
+  </div>
+</div>
+
+<div id="ck-panel" role="dialog" aria-modal="true" aria-label="Préférences cookies">
+  <div class="ckp-inner">
+    <div class="ckp-head">
+      <div class="ckp-head-text">
+        <p class="ck-title">Préférences de confidentialité</p>
+        <p class="ck-desc" style="margin-top:0;">Choisissez les catégories de cookies que vous autorisez. Vos préférences sont enregistrées localement et peuvent être modifiées à tout moment.</p>
+      </div>
+      <button class="ckp-close" id="ckPanelClose" aria-label="Fermer">&#x2715;</button>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies essentiels</span>
+        <span class="ck-toggle-locked" title="Toujours actifs">
+          <span class="ck-lock-icon">&#x1F512;</span>
+        </span>
+      </div>
+      <p class="ck-cat-desc">Indispensables au fonctionnement du site : navigation, sécurité, mémorisation de vos préférences de cookies. Ils ne peuvent pas être désactivés.</p>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies analytiques</span>
+        <label class="ck-toggle" aria-label="Activer les cookies analytiques">
+          <input type="checkbox" id="ck-analytics">
+          <span class="ck-toggle-track"></span>
+          <span class="ck-toggle-thumb"></span>
+        </label>
+      </div>
+      <p class="ck-cat-desc">Nous permettent de mesurer l'audience et d'analyser l'utilisation du site afin d'en améliorer les performances et le contenu (ex. Google Analytics).</p>
+    </div>
+
+    <div class="ck-cat">
+      <div class="ck-cat-row">
+        <span class="ck-cat-name">Cookies marketing</span>
+        <label class="ck-toggle" aria-label="Activer les cookies marketing">
+          <input type="checkbox" id="ck-marketing">
+          <span class="ck-toggle-track"></span>
+          <span class="ck-toggle-thumb"></span>
+        </label>
+      </div>
+      <p class="ck-cat-desc">Permettent de vous proposer des contenus personnalisés et de mesurer l'efficacité de nos communications sur des plateformes tierces.</p>
+    </div>
+
+    <div class="ckp-foot">
+      <button class="ck-btn-refuse" id="ckPanelRefuse"><span>Tout refuser</span></button>
+      <button class="ck-btn-accept" id="ckPanelSave"><span>Enregistrer mes choix</span></button>
+    </div>
+  </div>
+</div>
+<!-- ══ FIN BANNIÈRE COOKIES ══ -->
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
+  <ul class="nav-ul">
+    <li><a href="index.html">Accueil</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="LE.html">L'Étude</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="TR.html">Tarifs</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="NE.html">Nos Expertises</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="EQ.html">L'Équipe</a></li>
+    <li><div class="ndot"></div></li>
+    <li><a href="CT.html">Contact</a></li>
+    <li><a href="CT.html" class="nrdv"><span>Prendre rendez-vous</span></a></li>
+  </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="nav-mobile">
+  <a href="index.html" class="nm-link" data-label="Accueil">Accueil</a>
+  <div class="nm-rule"></div>
+  <a href="LE.html" class="nm-link" data-label="L'Étude">L'Étude</a>
+  <div class="nm-rule"></div>
+  <a href="TR.html" class="nm-link" data-label="Tarifs">Tarifs</a>
+  <div class="nm-rule"></div>
+  <a href="NE.html" class="nm-link" data-label="Nos Expertises">Nos Expertises</a>
+  <div class="nm-rule"></div>
+  <a href="EQ.html" class="nm-link" data-label="L'Équipe">L'Équipe</a>
+  <div class="nm-rule"></div>
+  <a href="CT.html" class="nm-link" data-label="Contact">Contact</a>
+  <a href="CT.html" class="nm-rdv"><span>Prendre rendez-vous</span></a>
+</div>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <canvas id="particles"></canvas>
+  <div class="seal"></div>
+  <div class="seal"></div>
+  <div class="seal"></div>
+  <div class="seal"></div>
+  <svg class="txt-ring" viewBox="0 0 580 580">
+    <defs><path id="rp" d="M290,290 m-238,0 a238,238 0 1,1 476,0 a238,238 0 1,1 -476,0"/></defs>
+    <text><textPath href="#rp">NOTAVEXIN · OFFICE NOTARIALE · CHAUMONT EN VEXIN · DROIT · RIGUEUR · CONFIDENTIALITE · EXCELLENCE · &nbsp;</textPath></text>
+  </svg>
+  <div class="hbody">
+    <div class="h-eye"><div class="h-eye-bar"></div><span>Office fondée au XIX ème siècle — Chaumont en Vexin</span><div class="h-eye-bar"></div></div>
+    <h1 class="h-title">
+      <span class="r1"><span>NOTAVEXIN</span></span>
+      <span class="r2"><span>Office &nbsp; Notariale</span></span>
+    </h1>
+    <div class="h-rule"></div>
+    <p class="h-sub">Une office notariale au plus près de ses clients, animé par 2 notaires  et des collaborateurs engagés, réactifs et spécialisés</p>
+    <div class="h-cta">
+      <a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a>
+    </div>
+  </div>
+  <div class="h-scroll"><span></span><div class="h-scroll-bar"></div></div>
+</section>
+<!-- ══ SECTION AVIS ══ -->
+<section id="avis">
+  <div class="avis-ghost">A</div>
+
+  <div class="avis-head rv">
+    <div class="eyebrow c"><span>Témoignages</span></div>
+    <h2 class="stitle">La confiance de <em>nos clients</em></h2>
+    <p class="avis-head-sub">Plus de 180 années d'accompagnement. Des milliers de familles conseillées avec rigueur et confidentialité.</p>
+    <div class="avis-score">
+      <span class="avis-score-n">4.7</span>
+      <div class="avis-score-sep"></div>
+      <div class="avis-score-right">
+        <div class="avis-stars-row">
+          <div class="avis-star"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg><div class="fill"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg></div></div>
+          <div class="avis-star"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg><div class="fill"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg></div></div>
+          <div class="avis-star"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg><div class="fill"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg></div></div>
+          <div class="avis-star"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg><div class="fill"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg></div></div>
+          <div class="avis-star"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg><div class="fill"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.5 1.3 4L7 9.2 3.2 11.5l1.3-4L1 5h4.5z"/></svg></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="avis-track-outer">
+    <div class="avis-track" id="avisTrack">
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Plusieurs actes rédigés dans cette étude, je remercie Mme MADIN et Maître VOLANTE pour la qualité de nos échanges, le professionnalisme et la disponibilité de l'étude. Nous y reviendrons les yeux fermés.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">C</div><div class="avis-card-info"><span class="avis-card-name">Charles</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">J'ai eu recours à maitre Angeras dans le cadre de l'achat d'un appartement, et je recommande vivement ses services. L'équipe a fait preuve d'un grand professionnalisme tout au long du processus. Leur réactivité a été exemplaire, avec des réponses claires et rapides à chaque étape, même dans les moments urgents. Un vrai partenaire de confiance pour une transaction immobilière réussie !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">CB</div><div class="avis-card-info"><span class="avis-card-name">Christophe B.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Dans le cadre d'une sortie d'indivision et d'un partage complexe , au delà de ses compétences juridiques et de sa parfaite maitrise du droit rural, j'ai apprécié le sens de la diplomatie de Maitre Angeras, son écoute active. Elle a une approche consensuelle. Elle est réactive et très efficace.Elle possède un excellent sens du relationnel.Je la recommande vivement.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">DS</div><div class="avis-card-info"><span class="avis-card-name">Dominique S.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">J'ai bénéficié de l'expertise de Maître ANGERAS lors de la vente d'un appartement. Elle est disponible, très professionnelle, elle assure pleinement la défense de vos intérêts, quelque soit le dossier dont elle est en charge. Si vous n'avez pas de notaire, je recommande vivement Maître ANGERAS que je remercie pour son efficacité.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">PG</div><div class="avis-card-info"><span class="avis-card-name">Patrick G.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Concernant la succession de mon mari et de la vente de ma résidence secondaire tout a été très professionnellement encadré par maître VOLANTE et sa collaboratrice Mme Doriane Vandenberge. (Des réponses immédiates à nos questions. De la disponibilité de la gentillesse de la bienveillance de la simplicité des conseils tout a été parfait.) Mes filles et moi nous vous remercions sincèrement Mesdames. Mme joly et ses filles</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">MJ</div><div class="avis-card-info"><span class="avis-card-name">Martine J.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">J'ai été très satisfaite de l'accompagnement et du professionnalisme de Maitre Volante et Vandenberge. Elles m'ont accompagné sur l'acquisition de mon bien immobilier du début à la fin et ont été très réactives quant à l'avancement de mon dossier. Merci beaucoup à vous. Je recommanderai votre office à mon entourage !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">NS</div><div class="avis-card-info"><span class="avis-card-name">Nivedha S.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Nous avons contacté Maître Angeras pour un projet immobilier et nous avons été parfaitement accompagnés. Le projet n'était pas simple car il impliquait des achats/ventes en cascade mais nous avons eu un très bon suivi et une bonne communication. Nous recommandons et ferons de nouveau appel à Maître Angeras en cas de besoin !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">YA</div><div class="avis-card-info"><span class="avis-card-name">Yvan A.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">J'ai été très satisfaite de l'accompagnement de Maître Volante et plus particulièrement de la disponibilité de Madame Vandenberge durant une période difficile, en raison du traitement d'une succession. Je n'hésiterai à refaire appel au Cabinet dans le futur !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">NT</div><div class="avis-card-info"><span class="avis-card-name">Nadine T.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Notre association Semeurs de Forêts a fait l'acquisition d'un terrain dans l'Oise avec le concours de maître Volante. Nous avis été ravis du suivi du dossier, ainsi que du sérieux et du professionnalisme de toute l'équipe. L'ensemble des pièces d'urbanisme a bien été pris en compte et présenté, contrairement à ce à quoi nous avons eu à faire face dans d'autres études. Nous recommandons sans hésiter !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">DB</div><div class="avis-card-info"><span class="avis-card-name">David B.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Un grand MERCI à l'étude, particulièrement à Maître Angeras et Madame Nozière pour leur écoute, leur professionnalisme et leur bienveillance. Toute l'étude a fait un travail formidable pour mener à bien une succession qui n'était pas du tout évidente. Nous sommes plus que ravis d'avoir eu l'étude à nos côtés pour gérer ce dossier difficile, et il est certain que l'étude Angeras restera notre notaire de famille.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">LS</div><div class="avis-card-info"><span class="avis-card-name">Ludivine S.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Etude particulièrement sérieuse, très à l'écoute et réconfortante, professionnelle. Suite au décès de mon époux et de ma maman, je suis reconnaissante à Maître Volanté d'avoir géré nos successions avec tant d'efficacité. Merci à vous pour l'aide dans toutes les formalités. Je recommande votre étude pour votre compétence, votre écoute, tant pour la vente de l'appartement que pour l'achat de celui de mon petit fils. Je vous remercie sincèrement pour votre gentillesse et celle de toute votre équipe.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">CC</div><div class="avis-card-info"><span class="avis-card-name">Chantale C.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Disponibilité, réactivité, conseils et ce, toujours avec le sourire! Maître Volanté est très efficace, elle rend accessible et compréhensible tous les dossiers en prenant le temps de répondre à nos questions, d'expliquer jusqu'à ce que l'on ait compris. Elle excelle dans son domaine d'expertise et c'est avec confiance et sérénité que j'aurai plaisir à y retourner prochainement.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">BH</div><div class="avis-card-info"><span class="avis-card-name">Bernard H.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Cliente depuis 17 ans du cabinet, je me suis naturellement adressée à eux suite au décès de ma maman. Maitre Volante à été vraiment très bien, humaine, compréhensive et bienveillante. Tout s'est très bien passé et je continuerai de leur confier mes dossiers au besoin. J'en profite pour présenter tous mes voeux au cabinet au passage de mon commentaire ;-)</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">ST</div><div class="avis-card-info"><span class="avis-card-name">Sonia T.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Une équipe d'un très grand professionnalisme et très sensible à notre situation (vente d'une propriété de famille). Dès les premiers jours nous avions la certitude d'être entre de bonnes mains. Un excellent rapport s'est établi très rapidement avec l' Étude et nous avons été guidés tout le long d'un parcours parfois compliqué. Je souhaiterais en particulier exprimer à Madame Aude Nozière toute ma gratitude et mes remerciements pour son travail exceptionnel.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">CB</div><div class="avis-card-info"><span class="avis-card-name">Chrisitan B.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Maître VOLANTE m'a accompagné tout au long de mon projet d'achat de maison, elle a été d'une grande écoute et d'un professionnalisme à toute épreuve. Elle a su répondre à toutes mes problématiques alors même que nous étions au début de la crise sanitaire, elle est restée disponible malgré les difficultés que nous connaissions tous. Elle a été d'une grande efficacité et m'a permis de finaliser mon projet en toute sérénité. Je l'ai recommandé à beaucoup d'amis et je la recommanderai encore !</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">MF</div><div class="avis-card-info"><span class="avis-card-name">Marie F.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">J'ai fait appel à Maître Angeras pour l'acquisition de mon premier bien immobilier. J'ai grandement apprécié à la fois sa réactivité/disponibilité et sa pédagogie. Elle a pris le temps de revoir avec moi chaque document (promesse, contrat) pour m'expliquer l'ensemble des points qui m'étaient jusqu'alors inconnus. Je ne manquerai pas de faire à nouveau appel à son étude pour mes futurs besoins.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">AP</div><div class="avis-card-info"><span class="avis-card-name">Astrid P.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Avec mes sœurs, nous avons confié la succession de notre frère à l'Etude NOTAVEXIN. Nous étions bouleversées par la situation, et avons eu un accueil chaleureux. Nous avons reçu des explications simples pour tout le vocabulaire notarial. Réactif à nos demandes. L'ensemble du dossier, de la succession à la vente du bien immobilier, s'est déroulé dans la plus grande clarté. Merci à Maître VOLANTE et ses collaborateurs/collaboratrices pour la mise à l'aise dans ces démarches difficiles.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">TB</div><div class="avis-card-info"><span class="avis-card-name">Theryas B.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d2">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Nous avons fait notre premier achat immobilier avec cette office notarial, Maître ANGERAS a été d'une grande écoute et d'un accompagnement parfait. Il est parfois difficile de tout bien comprendre mais elle a toujours fait preuve de patience en nous expliquant les choses parfois a plusieurs reprises. Toujours agréable et dynamique, je recommande vivement.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">MT</div><div class="avis-card-info"><span class="avis-card-name">Magalie T.</span></div></div>
+      </div>
+
+      <div class="avis-card rv">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Consulté pour un contrat de mariage, 2 testaments et 1 achat. Excellente prestations. Disponibilité et réactivité. Notre dossier a été très bien suivi et les conseils prodigués sont d'excellente qualité. Professionnels accessibles. Pour une signature d'achat au 30 décembre, jusqu'au bout nous avons été accompagné. Nous recommandons vivement et d'ailleurs nous allons continuer à faire appel à eux.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">VB</div><div class="avis-card-info"><span class="avis-card-name">Valerie B.</span></div></div>
+      </div>
+
+      <div class="avis-card rv d1">
+        <span class="avis-card-source">Google</span>
+        <div class="avis-card-quote">"</div>
+        <div class="avis-card-stars"><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span><span class="on">★</span></div>
+        <p class="avis-card-text">Maître Floriane Angéras assure un suivi des dossiers sans faille, et a une véritable dimension de conseil y compris pour des opérations sur la région parisienne. Etant avocat je suis très exigeant en particulier sur les matières que je ne maîtrise pas, et suis d'autant plus ravi d'être client de cet office notarial familial ancré dans le Vexin.</p>
+        <div class="avis-card-sep"></div>
+        <div class="avis-card-author"><div class="avis-card-monogram">DH</div><div class="avis-card-info"><span class="avis-card-name">David H.</span></div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="avis-progress"><div class="avis-progress-fill" id="avisProgressFill"></div></div>
+
+  <div class="avis-controls">
+    <button class="avis-btn prev" id="avisPrev" aria-label="Précédent">
+      <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
+    </button>
+    <div class="avis-dots" id="avisDots"></div>
+    <button class="avis-btn next" id="avisNext" aria-label="Suivant">
+      <svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg>
+    </button>
+  </div>
+
+</section>
+
+<section id="etude">
+  <div class="etude-bg" id="etudeBg"></div>
+  <div class="etude-overlay"></div>
+  <div class="etude-line-l"></div>
+  <div class="etude-line-r"></div>
+  <div class="etude-body">
+    <div class="etude-tag"><div class="etude-tag-bar"></div><span>Notre Étude</span><div class="etude-tag-bar"></div></div>
+    <h2 class="etude-title">
+      <span class="et-line"><span>Une étude</span></span>
+      <span class="et-line"><span>à votre</span></span>
+      <span class="et-line"><span><em style="font-style:italic;color:var(--gl);">service.</em></span></span>
+    </h2>
+    <div class="etude-rule"></div>
+    <p class="etude-desc">Notre étude accompagne collectivités, chefs d'entreprise avec rigueur et confidentialité depuis près de deux siècles.</p>
+    <div class="etude-vals">
+      <div class="etude-val"><span class="etude-val-n">Vexin</span><span class="etude-val-l">Ancrage local</span></div>
+      <div class="etude-sep"></div>
+      <div class="etude-val"><span class="etude-val-n">2</span><span class="etude-val-l">Notaires</span></div>
+    </div>
+    <div class="etude-cta"><a href="LE.html" class="b-inline-w">Découvrir l'étude <span class="arr">→</span></a></div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="sc rv d3"><span class="snum"><span class="cnt" data-t="4.7">0</span></span><span class="slbl">Office labéllisé</span></div>
+  <div class="sc rv d1"><span class="snum">+<span class="cnt" data-t="180">0</span> </span><span class="slbl">Années d'expérience</span></div>
+  <div class="sc rv d2"><span class="snum"><span class="cnt" data-t="98">0</span> %</span><span class="slbl">Clients satisfaits</span></div>
+  <div class="sc rv d3"><span class="snum"><span class="cnt" data-t="2">0</span></span><span class="slbl">Notaires associés</span></div>
+</section>
+
+<section id="expertise">
+  <div class="exp-head rv">
+    <div class="eyebrow c"><span>Domaines d'expertise</span></div>
+    <h2 class="stitle">Des expertises <em>à votre mesure</em></h2>
+    <p>Votre dossier est suivi par un collaborateur spécialisé dans son domaine d'exécution.</p>
+  </div>
+  <div id="expRows">
+
+    <a href="NE.html#immobilier" class="exp-row" data-tag="Transactions · Acquisitions" data-cap="Sécuriser vos acquisitions">
+      <div class="exp-row-bg"></div><div class="exp-row-bar"></div>
+      <span class="exp-ghost">01</span>
+      <div class="exp-inner">
+        <span class="exp-num">01</span>
+        <span class="exp-title">Droit Immobilier</span>
+        <div class="exp-meta"><span class="exp-tag">Transactions · Acquisitions</span><span class="exp-arr">→</span></div>
+      </div>
+      <div class="exp-img-wrap">
+        <div class="exp-img-fade"></div>
+        <img class="exp-img" src="di.png" alt="Droit immobilier">
+        <div class="exp-cap"><div class="exp-cap-tag"></div><div class="exp-cap-name"></div></div>
+      </div>
+    </a>
+
+    <a href="NE.html#famille" class="exp-row" data-tag="Successions · Donations" data-cap="Accompagner vos proches">
+      <div class="exp-row-bg"></div><div class="exp-row-bar"></div>
+      <span class="exp-ghost">02</span>
+      <div class="exp-inner">
+        <span class="exp-num">02</span>
+        <span class="exp-title">Droit de la Famille</span>
+        <div class="exp-meta"><span class="exp-tag">Successions · Donations</span><span class="exp-arr">→</span></div>
+      </div>
+      <div class="exp-img-wrap">
+        <div class="exp-img-fade"></div>
+        <img class="exp-img" src="df.png" alt="Droit de la famille">
+        <div class="exp-cap"><div class="exp-cap-tag"></div><div class="exp-cap-name"></div></div>
+      </div>
+    </a>
+
+    <a href="NE.html#patrimoine" class="exp-row" data-tag="Transmission · Optimisation" data-cap="Préserver votre héritage">
+      <div class="exp-row-bg"></div><div class="exp-row-bar"></div>
+      <span class="exp-ghost">03</span>
+      <div class="exp-inner">
+        <span class="exp-num">03</span>
+        <span class="exp-title">Gestion De Patrimoine</span>
+        <div class="exp-meta"><span class="exp-tag">Transmission · Optimisation</span><span class="exp-arr">→</span></div>
+      </div>
+      <div class="exp-img-wrap">
+        <div class="exp-img-fade"></div>
+        <img class="exp-img" src="gp.jpg" alt="Gestion de patrimoine">
+        <div class="exp-cap"><div class="exp-cap-tag"></div><div class="exp-cap-name"></div></div>
+      </div>
+    </a>
+
+    <a href="NE.html#rural" class="exp-row" data-tag="Agriculture · Foncier" data-cap="Accompagner vos projets ruraux">
+      <div class="exp-row-bg"></div><div class="exp-row-bar"></div>
+      <span class="exp-ghost">04</span>
+      <div class="exp-inner">
+        <span class="exp-num">04</span>
+        <span class="exp-title">Droit Rural</span>
+        <div class="exp-meta"><span class="exp-tag">Agriculture · Foncier</span><span class="exp-arr">→</span></div>
+      </div>
+      <div class="exp-img-wrap">
+        <div class="exp-img-fade"></div>
+        <img class="exp-img" src="dr.png" alt="Droit rural">
+        <div class="exp-cap"><div class="exp-cap-tag"></div><div class="exp-cap-name"></div></div>
+      </div>
+    </a>
+
+  </div>
+  <div class="exp-foot rv">
+    <a href="#contact" class="bp"><span>Consulter un notaire</span></a>
+  </div>
+</section>
+
+<section id="team">
+  <div class="thead rv">
+    <div class="eyebrow c"><span>Notre équipe</span></div>
+    <h2 class="stitle"><em>Deux notaires,</em> une vision.</h2>
+    <p>Des professionnels réunis par une même exigence d'excellence et une attention sincère portée à chaque client.</p>
+  </div>
+  <div class="tgrid">
+    <div class="card rv">
+      <div class="cphoto">
+        <div class="cph"><svg width="60" height="74" viewBox="0 0 62 76" fill="none"><circle cx="31" cy="22" r="15" stroke="#b8860b" stroke-width="1.5"/><path d="M1 76c0-16.569 13.431-30 30-30s30 13.431 30 30" stroke="#b8860b" stroke-width="1.5"/></svg></div>
+        <img class="cimg" src="FA.png" alt="Maître Floriane Angeras-Lacaille">
+      </div>
+      <div class="cgrad"></div>
+      <div class="clabel"><div class="crole">Notaire Associée</div><div class="cname">Maître Floriane ANGERAS-LACAILLE</div></div>
+      <div class="cbio"><div class="cbio-bar"></div><div class="cbio-name">Maître Floriane ANGERAS-LACAILLE</div><div class="cbio-role">Notaire Associée</div><p class="cbio-txt">Spécialiste en droit rural, elle accompagne ses clients avec rigueur et bienveillance.</p></div>
+      <div class="cpip"></div>
+    </div>
+    <div class="card rv d1">
+      <div class="cphoto">
+        <div class="cph"><svg width="60" height="74" viewBox="0 0 62 76" fill="none"><circle cx="31" cy="22" r="15" stroke="#b8860b" stroke-width="1.5"/><path d="M1 76c0-16.569 13.431-30 30-30s30 13.431 30 30" stroke="#b8860b" stroke-width="1.5"/></svg></div>
+        <img class="cimg" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=700&q=80" alt="Maître Mathilde Volante">
+      </div>
+      <div class="cgrad"></div>
+      <div class="clabel"><div class="crole">Notaire Associée</div><div class="cname">Maître Mathilde VOLANTE</div></div>
+      <div class="cbio"><div class="cbio-bar"></div><div class="cbio-name">Maître Mathilde VOLANTE</div><div class="cbio-role">Notaire Associée</div><p class="cbio-txt">Experte en droit immobilier ainsi qu'en droit de la famille, elle accompagne les particuliers tant dans leurs projets immobiliers que dans les grands évènements de leur vie familiale.</p></div>
+      <div class="cpip"></div>
+    </div>
+  </div>
+  <div class="team-cta rv">
+    <a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="cbox">
+    <div class="eyebrow c rv"><span>Nous contacter</span></div>
+    <h2 class="stitle rv">Parlons de <em>votre projet.</em></h2>
+    <p class="rv">Notre équipe vous reçoit sur rendez-vous, du lundi au vendredi, de 9h à 17h30. Chaque consultation est traitée avec la plus stricte confidentialité.</p>
+    <div class="ctable rv d1">
+      <a href="tel:+33123456789" class="crow"><span class="clbl">Téléphone</span><span class="cval">03 44 49 00 02</span><span class="carr">→</span></a>
+      <a href="mailto:contact@notavexin.fr" class="crow"><span class="clbl">Email</span><span class="cval">contact@notavexin.fr</span><span class="carr">→</span></a>
+      <div class="crow"><span class="clbl">Adresse</span><span class="cval">8 rue de la République, Chaumont en Vexin, Oise</span><span class="carr">→</span></div>
+      <div class="crow"><span class="clbl">Horaires</span><span class="cval">Lun – Ven · 9h – 17h30</span><span class="carr">→</span></div>
+    </div>
+    <div class="rv d2"><a href="CT.html" class="bp"><span>Prendre rendez-vous</span></a></div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo"><img src="nv.png" alt="NOTAVEXIN Notaires"></a>
+  <span class="fcopy">© 2026 NOTAVEXIN — Tous droits réservés</span>
+  <div class="flinks"><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></div>
+  <span class="fcredit">Réalisé par <a href="https://apostill.fr/" target="_blank" rel="noopener">APOSTILL</a></span>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* PARTICULES OR */
+var canvas=document.getElementById("particles");
+var ctx=canvas.getContext("2d");
+var hero=document.getElementById("hero");
+var GOLD=["rgba(212,160,18,","rgba(184,134,11,","rgba(230,185,60,","rgba(160,115,8,"];
+var W,H,mouse={x:-999,y:-999},particles=[],heroVisible=true;
+
+function resize(){W=canvas.width=hero.offsetWidth;H=canvas.height=hero.offsetHeight;}
+
+function makeParticles(){
+  particles=[];
+  var total=Math.max(80,Math.min(130,Math.floor(W*H/9000)));
+  for(var i=0;i<total;i++){
+    var bright=i<8;
+    particles.push({bx:Math.random()*W,by:Math.random()*H,x:0,y:0,r:bright?2.8+Math.random()*1.7:1.2+Math.random()*1.6,col:GOLD[Math.floor(Math.random()*GOLD.length)],baseAlpha:bright?0.45+Math.random()*0.35:0.12+Math.random()*0.22,phase:Math.random()*Math.PI*2,freqX:0.0003+Math.random()*0.0005,freqY:0.0002+Math.random()*0.0004,ampX:12+Math.random()*28,ampY:8+Math.random()*22,pulsePhase:Math.random()*Math.PI*2,pulseFreq:0.0008+Math.random()*0.0012,bright:bright});
+  }
+}
+
+function draw(timestamp){
+  requestAnimationFrame(draw);
+  if(!heroVisible||window.innerWidth<768)return;
+  ctx.clearRect(0,0,W,H);
+  var t=timestamp;
+  for(var i=0;i<particles.length;i++){
+    var p=particles[i];
+    var tx=p.bx+Math.sin(t*p.freqX+p.phase)*p.ampX;
+    var ty=p.by+Math.cos(t*p.freqY+p.phase+1.2)*p.ampY;
+    var dx=tx-mouse.x,dy=ty-mouse.y,dist=Math.sqrt(dx*dx+dy*dy),R=110;
+    if(dist<R){var f=(R-dist)/R;f=f*f*0.55;tx+=(dx/dist)*f*38;ty+=(dy/dist)*f*38;}
+    p.x=tx;p.y=ty;
+    var alpha=p.baseAlpha;
+    if(p.bright){alpha+=Math.sin(t*p.pulseFreq+p.pulsePhase)*0.18;alpha=Math.max(0.2,Math.min(0.85,alpha));}
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.col+alpha+")";ctx.fill();
+    if(p.bright&&alpha>0.4){ctx.beginPath();ctx.arc(p.x,p.y,p.r*2.2,0,Math.PI*2);ctx.fillStyle=p.col+(alpha*0.12)+")";ctx.fill();}
+  }
+}
+
+hero.addEventListener("mousemove",function(e){var r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
+hero.addEventListener("mouseleave",function(){mouse.x=-999;mouse.y=-999;});
+new IntersectionObserver(function(e){heroVisible=e[0].isIntersecting;},{threshold:0}).observe(hero);
+resize();makeParticles();requestAnimationFrame(draw);
+window.addEventListener("resize",function(){resize();makeParticles();},{passive:true});
+
+/* CURSOR */
+var dot=document.getElementById("dot"),ring=document.getElementById("ring");
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener("mousemove",function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+"px";dot.style.top=my+"px";});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+"px";ring.style.top=ry+"px";requestAnimationFrame(loop);})();
+document.querySelectorAll("a,button,.exp-row,.card,.crow,.sc,.avis-card").forEach(function(el){
+  el.addEventListener("mouseenter",function(){document.body.classList.add("hov");});
+  el.addEventListener("mouseleave",function(){document.body.classList.remove("hov");});
+});
+
+/* NAV */
+function checkNav(){document.getElementById("nav").classList.toggle("on",window.scrollY>60);}
+window.addEventListener("scroll",checkNav,{passive:true});checkNav();
+
+/* HAMBURGER */
+var burger=document.getElementById("navBurger");
+var navMob=document.getElementById("nav-mobile");
+if(burger&&navMob){
+  burger.addEventListener("click",function(){
+    var open=burger.classList.toggle("open");
+    navMob.classList.toggle("open",open);
+    document.body.style.overflow=open?"hidden":"";
+  });
+  navMob.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click",function(){
+      burger.classList.remove("open");
+      navMob.classList.remove("open");
+      document.body.style.overflow="";
+    });
+  });
+}
+
+/* REVEAL */
+var revObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");revObs.unobserve(e.target);}});
+},{threshold:.07,rootMargin:"0px 0px -20px 0px"});
+document.querySelectorAll(".rv").forEach(function(el){revObs.observe(el);});
+
+/* PARALLAX */
+var hbody=document.querySelector(".hbody"),txtRing=document.querySelector(".txt-ring");
+var etudeBg=document.getElementById("etudeBg"),etudeSection=document.getElementById("etude");
+if(txtRing)txtRing.style.transform="translate(-50%,-50%) rotate(0deg)";
+window.addEventListener("scroll",function(){
+  var y=window.scrollY;
+  if(hbody)hbody.style.transform="translateY("+(y*.08)+"px)";
+  if(txtRing)txtRing.style.transform="translate(-50%,-50%) rotate("+(y*.03)+"deg)";
+  if(etudeBg&&etudeSection){
+    var rect=etudeSection.getBoundingClientRect();
+    var shift=((rect.top/(window.innerHeight+rect.height))-.5)*55;
+    etudeBg.style.transform="scale(1.08) translateY("+shift+"px)";
+  }
+},{passive:true});
+
+/* ÉTUDE in-view */
+if(etudeSection){
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in-view");this.unobserve(e.target);}}.bind(this));
+  },{threshold:.2}).observe(etudeSection);
+}
+
+/* COUNTERS */
+var cntObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(!e.isIntersecting)return;
+    e.target.querySelectorAll(".cnt").forEach(function(el){
+      var target=parseFloat(el.dataset.t),isFloat=(el.dataset.t.indexOf('.')!==-1),t0=null;
+(function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1800,1),ease=1-Math.pow(1-p,3);var val=ease*target;el.textContent=isFloat?val.toFixed(1).replace('.',','):Math.floor(val).toLocaleString("fr-FR");if(p<1)requestAnimationFrame(step);else el.textContent=isFloat?target.toFixed(1).replace('.',','):target.toLocaleString("fr-FR");})(performance.now());
+    });cntObs.unobserve(e.target);
+  });
+},{threshold:.3});
+document.querySelectorAll(".sc").forEach(function(el){cntObs.observe(el);});
+
+/* EXPERTISE rows */
+var expRows=document.querySelectorAll(".exp-row");
+var expSection=document.getElementById("expRows");
+if(expSection){
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      expRows.forEach(function(r,i){setTimeout(function(){r.classList.add("on");},i*120);});
+      this.disconnect();
+    }.bind(this));
+  },{threshold:.06}).observe(expSection);
+}
+expRows.forEach(function(row){
+  var cTag=row.querySelector(".exp-cap-tag");
+  var cName=row.querySelector(".exp-cap-name");
+  var timer=null;
+  row.addEventListener("mouseenter",function(){
+    if(cTag)cTag.textContent=row.dataset.tag||"";
+    if(cName)cName.textContent=row.dataset.cap||"";
+    timer=setTimeout(function(){row.classList.add("img-active");},400);
+  });
+  row.addEventListener("mouseleave",function(){
+    clearTimeout(timer);
+    row.classList.remove("img-active");
+  });
+});
+
+/* ═══════════════════════════════════════════
+   SECTION AVIS — auto-scroll infini fluide
+═══════════════════════════════════════════ */
+(function(){
+  var avisSection = document.getElementById("avis");
+  var outer       = document.querySelector(".avis-track-outer");
+  var track       = document.getElementById("avisTrack");
+  var SPEED       = 0.55; /* px par frame — ajuster si besoin */
+  var paused      = false;
+  var isDragging  = false;
+
+  /* Init in-view */
+  new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){ avisSection.classList.add("in-view"); this.disconnect(); }
+  },{threshold:.15}).observe(avisSection);
+
+  /* Cloner toutes les cartes pour la boucle seamless */
+  var origCards = Array.prototype.slice.call(track.querySelectorAll(".avis-card"));
+  origCards.forEach(function(c){
+    var clone = c.cloneNode(true);
+    clone.setAttribute("aria-hidden","true");
+    track.appendChild(clone);
+  });
+
+  /* Auto-scroll via requestAnimationFrame */
+  function tick(){
+    if(!paused && !isDragging){
+      outer.scrollLeft += SPEED;
+      /* Boucle seamless : quand on atteint la moitié (fin des cartes originales),
+         on revient au début sans saut visible */
+      var half = outer.scrollWidth / 2;
+      if(outer.scrollLeft >= half){
+        outer.scrollLeft -= half;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  /* Laisser le DOM se stabiliser avant de démarrer */
+  requestAnimationFrame(function(){ requestAnimationFrame(tick); });
+
+  /* ── Desktop : pause au survol des cartes uniquement ── */
+  track.addEventListener("mouseover", function(e){
+    if(e.target.closest(".avis-card")) paused = true;
+  });
+  track.addEventListener("mouseout", function(e){
+    if(e.target.closest(".avis-card") && !isDragging) paused = false;
+  });
+
+  /* ── Desktop : drag souris libre ── */
+  var dragStartX = 0, scrollStart = 0;
+  track.addEventListener("mousedown", function(e){
+    isDragging = true; paused = true;
+    dragStartX = e.clientX; scrollStart = outer.scrollLeft;
+    track.classList.add("dragging");
+    e.preventDefault();
+  });
+  document.addEventListener("mousemove", function(e){
+    if(!isDragging) return;
+    outer.scrollLeft = scrollStart - (e.clientX - dragStartX);
+    /* Gérer la boucle pendant le drag */
+    var half = outer.scrollWidth / 2;
+    if(outer.scrollLeft < 0)    outer.scrollLeft += half;
+    if(outer.scrollLeft >= half) outer.scrollLeft -= half;
+  });
+  document.addEventListener("mouseup", function(){
+    if(!isDragging) return;
+    isDragging = false;
+    track.classList.remove("dragging");
+    /* Reprendre sauf si le curseur est encore sur une carte */
+    if(!e.target.closest(".avis-card")) paused = false;
+  });
+
+  /* ── Mobile : pause au toucher d'une carte ── */
+  track.addEventListener("touchstart", function(){ paused = true;  }, {passive:true});
+  track.addEventListener("touchend",   function(){ paused = false; }, {passive:true});
+  track.addEventListener("touchcancel",function(){ paused = false; }, {passive:true});
+})();
+
+/* ══════════════════════════════════════
+   GESTION COOKIES
+══════════════════════════════════════ */
+(function(){
+  var STORAGE_KEY = 'nv_cookies_v1';
+  var banner  = document.getElementById('ck-banner');
+  var overlay = document.getElementById('ck-overlay');
+  var panel   = document.getElementById('ck-panel');
+
+  function loadPrefs(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+    catch(e){ return null; }
+  }
+  function savePrefs(prefs){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+  }
+  function hideBanner(){
+    banner.classList.remove('visible');
+  }
+  function openPanel(){
+    var prefs = loadPrefs();
+    document.getElementById('ck-analytics').checked  = prefs ? !!prefs.analytics : false;
+    document.getElementById('ck-marketing').checked  = prefs ? !!prefs.marketing : false;
+    overlay.classList.add('visible');
+    panel.classList.add('visible');
+  }
+  function closePanel(){
+    panel.classList.remove('visible');
+    overlay.classList.remove('visible');
+  }
+
+  /* Afficher la bannière si aucun choix enregistré */
+  if(!loadPrefs()){
+    setTimeout(function(){ banner.classList.add('visible'); }, 900);
+  }
+
+  /* Tout accepter */
+  function acceptAll(){
+    savePrefs({analytics:true, marketing:true});
+    hideBanner(); closePanel();
+  }
+  /* Tout refuser */
+  function refuseAll(){
+    savePrefs({analytics:false, marketing:false});
+    hideBanner(); closePanel();
+  }
+  /* Enregistrer les choix du panneau */
+  function saveChoices(){
+    savePrefs({
+      analytics : document.getElementById('ck-analytics').checked,
+      marketing : document.getElementById('ck-marketing').checked
+    });
+    hideBanner(); closePanel();
+  }
+
+  document.getElementById('ckAccept').addEventListener('click', acceptAll);
+  document.getElementById('ckRefuse').addEventListener('click', refuseAll);
+  document.getElementById('ckPrefs').addEventListener('click', openPanel);
+  document.getElementById('ckPanelClose').addEventListener('click', closePanel);
+  document.getElementById('ckPanelRefuse').addEventListener('click', refuseAll);
+  document.getElementById('ckPanelSave').addEventListener('click', saveChoices);
+  overlay.addEventListener('click', closePanel);
+
+  /* Étendre le curseur custom aux éléments cookies */
+  var ckEls = document.querySelectorAll('#ck-banner button, #ck-panel button, #ck-panel label, #ck-banner a, #ck-panel a');
+  ckEls.forEach(function(el){
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('hov'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hov'); });
+  });
+})();
+
+})();
+</script>
+</body>
+</html>
