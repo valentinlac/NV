@@ -179,14 +179,32 @@ body.hov #ring{width:52px;height:52px;margin-left:-26px;margin-top:-26px;border-
 .bp:hover{box-shadow:0 6px 36px rgba(184,134,11,.42);}
 .bp:hover::before{transform:translateY(0);}
 .bp span{position:relative;z-index:1;}
-.tar-dl-wrap{
+.tar-refs{
   display:flex;
-  align-items:center;
-  gap:24px;
+  flex-direction:column;
+  gap:0;
   padding-top:8px;
   border-top:1px solid var(--ln);
 }
-.tar-dl-note{font-size:.58rem;line-height:1.75;color:var(--mu);max-width:260px;}
+.tar-refs-label{
+  font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--g);margin-bottom:14px;
+}
+.tar-ref-link{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:.95rem;letter-spacing:-.01em;
+  color:var(--tx2);text-decoration:none;
+  padding:11px 0;border-bottom:1px solid rgba(184,135,11,.15);
+  cursor:none;transition:color .3s,border-color .35s;position:relative;
+}
+.tar-ref-link::before{
+  content:'';width:16px;height:1px;background:var(--g);
+  flex-shrink:0;transition:width .4s var(--E);
+}
+.tar-ref-link:hover{color:var(--g);}
+.tar-ref-link:hover::before{width:26px;}
+.tar-ref-link:last-child{border-bottom:none;}
 
 /* FOOTER */
 footer{padding:0 72px;border-top:1px solid var(--ln);background:var(--bg1);display:flex;align-items:center;justify-content:space-between;min-height:80px;}
@@ -222,7 +240,7 @@ footer{padding:0 72px;border-top:1px solid var(--ln);background:var(--bg1);displ
   .he-body{padding-left:16px !important;padding-top:100px;}
   .he-deco{display:none;}
   #tarifs{padding:48px 20px 64px;}
-  .tar-dl-wrap{flex-direction:column;align-items:flex-start;gap:16px;}
+  .tar-refs{gap:0;}
   footer{flex-direction:column !important;gap:14px;padding:24px 20px !important;text-align:center;}
   .flinks{justify-content:center;}
   .footer-logo img{height:38px;}
@@ -294,9 +312,12 @@ footer{padding:0 72px;border-top:1px solid var(--ln);background:var(--bg1);displ
       <h2 class="tar-title rv">Des honoraires <em>encadrés</em><br>par la loi.</h2>
       <p class="tar-lead rv">En France, les honoraires notariaux sont fixés par décret et identiques dans tous les offices. Vous bénéficiez d'une totale transparence sur les coûts, sans surprise.</p>
       <p class="tar-body rv">Les émoluments réglementés couvrent la rédaction des actes courants — ventes immobilières, donations, successions, contrats de mariage. Seuls les honoraires de conseil et de consultation restent librement fixés, toujours communiqués en amont.<br><br>Nous vous accompagnons avec clarté à chaque étape, en détaillant la structure des frais dès la première consultation.</p>
-      <div class="tar-dl-wrap rv">
-        <a href="tarifs.pdf" class="bp" download><span>Télécharger les tarifs</span></a>
-        <p class="tar-dl-note">Grille tarifaire complète au format PDF, mise à jour conformément aux textes réglementaires en vigueur.</p>
+      <div class="tar-refs rv">
+        <div class="tar-refs-label">Textes de référence</div>
+        <a href="#" class="tar-ref-link">Décret numéro 2020 – 179 du 28 février 2020</a>
+        <a href="#" class="tar-ref-link">L444-1 à L444-4</a>
+        <a href="#" class="tar-ref-link">Article R.444-1 à R444-12</a>
+        <a href="#" class="tar-ref-link">Article A444-53 à l'article A444-186</a>
       </div>
     </div>
     <div class="tar-right">
